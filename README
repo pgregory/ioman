@@ -1,0 +1,12 @@
+A RenderMan binding for Io.
+
+To build, clone the repo into your 'addons' folder under the name 'RenderMan', i.e.
+
+   $: cd io/addons
+   $: git clone git://github.com/pgregory/ioman.git RenderMan
+
+Then from the root Io folder, build as any other Io addon, i.e.
+
+   $: cd io
+   $: make RenderMan
+   $: make install
