@@ -97,6 +97,36 @@ void IoRenderMan_free(IoRenderMan *self)
 	free(IoObject_dataPointer(self));
 }
 
+RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
+{
+	if(tok.count() == 1)
+	{
+		if(ISLIST(values))
+		{
+			List *list = IoList_rawList(values);
+			int size = List_size(list);
+			RtFloat* riValues = new RtFloat[size];
+			for(int i = 0; i < size; ++i)
+			{
+				IoNumber* num = reinterpret_cast<IoNumber*>(List_at_(list, i));
+				if(!ISNUMBER(num))
+					throw(std::runtime_error("Parameter list item must be a number"));
+				riValues[i] = IoNumber_asDouble(num);
+			}
+			return riValues;
+		}
+		else if(ISNUMBER(values))
+		{
+			RtFloat* riValues = new RtFloat[1];
+			riValues[0] = IoNumber_asDouble(values);
+			return riValues;
+		}
+		else
+		{
+			throw(std::runtime_error("Parameter list item must be a list(Number) or Number"));
+		}
+	}
+}
 
 IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs)
 {
@@ -120,7 +150,7 @@ IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject*
 		{
 			try
 			{
-				const char* token = IoMessage_locals_cStringArgAt_(m, locals, arg);
+				char* token = IoMessage_locals_cStringArgAt_(m, locals, arg);
 				Aqsis::CqPrimvarToken tok = data->tokenDict.parseAndLookup(token);
 				IoObject *values = IoMessage_locals_valueArgAt_(m, locals, arg+1);
 				// Now process the token and prep the value data accordingly.
@@ -128,35 +158,9 @@ IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject*
 				{
 					case Aqsis::type_float:
 					{
-						if(tok.count() == 1)
-						{
-							if(ISLIST(values))
-							{
-								List *list = IoList_rawList(values);
-								int size = List_size(list);
-								RtFloat* riValues = new RtFloat[size];
-								for(int i = 0; i < size; ++i)
-								{
-									IoNumber* num = reinterpret_cast<IoNumber*>(List_at_(list, i));
-									if(!ISNUMBER(num))
-										IoState_error_(IOSTATE, m, "Parameter list item #%i must be a Number", i);
-									riValues[i] = IoNumber_asDouble(num);
-								}
-								plist->tokens[tokenIndex] = token;
-								plist->values[tokenIndex] = riValues;
-							}
-							else if(ISNUMBER(values))
-							{
-								RtFloat* riValues = new RtFloat[1];
-								riValues[0] = IoNumber_asDouble(values);
-								plist->tokens[tokenIndex] = token;
-								plist->values[tokenIndex] = riValues;
-							}
-							else
-							{
-								IoState_error_(IOSTATE, m, "Parameter list expected list(Number), or Number for token %s", token);
-							}
-						}
+						RtFloat* riValues = IoRenderMan_getFloatParameter(tok, values);
+						plist->tokens[tokenIndex] = token;
+						plist->values[tokenIndex] = riValues;
 						break;
 					}
 					case Aqsis::type_integer:
