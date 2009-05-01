@@ -2,7 +2,9 @@ AddonBuilder clone do(
 	dependsOnLib("aqsis_ri2rib")
 
 	dependsOnHeader("ri.h")
-	appendHeaderSearchPath("/home/pgregory/aqsis/trunk/install/include/aqsis")
-	appendLibSearchPath("/home/pgregory/aqsis/trunk/install/lib")
+	AqsisRoot := System getEnvironmentVariable("AQSIS_ROOT") ifNilEval("/usr")
+
+	appendHeaderSearchPath(AqsisRoot .. "/include/aqsis")
+	appendLibSearchPath(AqsisRoot .. "/lib")
 )
 
