@@ -7,7 +7,9 @@ Describe your addon here.
 
 #include "IoState.h"
 #include "IoRenderMan.h"
+#include "IoObject.h"
 #include "IoList.h"
+#include "IoMap.h"
 #include "IoNumber.h"
 
 #include <iostream>
@@ -99,8 +101,10 @@ void IoRenderMan_free(IoRenderMan *self)
 
 RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
 {
+	// If the parameter is not an array type.
 	if(tok.count() == 1)
 	{
+		// If the values have been provided in a list.
 		if(ISLIST(values))
 		{
 			List *list = IoList_rawList(values);
@@ -115,6 +119,7 @@ RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* val
 			}
 			return riValues;
 		}
+		// If it is a single numerical value.
 		else if(ISNUMBER(values))
 		{
 			RtFloat* riValues = new RtFloat[1];
@@ -126,7 +131,38 @@ RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* val
 			throw(std::runtime_error("Parameter list item must be a list(Number) or Number"));
 		}
 	}
+	return NULL;
 }
+
+RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* values)
+{
+	Aqsis::CqPrimvarToken tok = DATA(self)->tokenDict.parseAndLookup(token);
+	// Now process the token and prep the value data accordingly.
+	switch(tok.type())
+	{
+		case Aqsis::type_float:
+		{
+			return IoRenderMan_getFloatParameter(tok, values);
+			break;
+		}
+		case Aqsis::type_integer:
+		case Aqsis::type_bool:
+		case Aqsis::type_string:
+		case Aqsis::type_triple:
+		case Aqsis::type_point:
+		case Aqsis::type_normal:
+		case Aqsis::type_vector:
+		case Aqsis::type_color:
+		case Aqsis::type_hpoint:
+		case Aqsis::type_matrix:
+		case Aqsis::type_sixteentuple:
+		case Aqsis::type_void:
+		case Aqsis::type_invalid:
+			break;
+	}
+	return NULL;
+}
+
 
 IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs)
 {
@@ -135,55 +171,56 @@ IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject*
 	plist->tokens = NULL;
 	plist->values = NULL;
 
-	IoRenderManData* data = DATA(self);
-
-	// Check the paramlist has been passed as a set of extra arguments to the function, name/value
-	// pairs.
-	if(numExtraArgs > 1 && (numExtraArgs&1) == 0)
+	try
 	{
-		int arg = startArg;
-		int numTokens = numExtraArgs/2;
-		plist->tokens = new RtToken[numTokens];
-		plist->values = new RtPointer[numTokens];
-		plist->count = numTokens;
-		for(int tokenIndex = 0; tokenIndex < numTokens; ++tokenIndex, arg+=2)
+		// Check the paramlist has been passed as a set of extra arguments to the function, name/value
+		// pairs.
+		if(numExtraArgs > 1 && (numExtraArgs&1) == 0)
 		{
-			try
+			int arg = startArg;
+			int numTokens = numExtraArgs/2;
+			plist->tokens = new RtToken[numTokens];
+			plist->values = new RtPointer[numTokens];
+			plist->count = numTokens;
+			// Process each token
+			for(int tokenIndex = 0; tokenIndex < numTokens; ++tokenIndex, arg+=2)
 			{
+				// First of each pair is the name.
 				char* token = IoMessage_locals_cStringArgAt_(m, locals, arg);
-				Aqsis::CqPrimvarToken tok = data->tokenDict.parseAndLookup(token);
+				plist->tokens[tokenIndex] = token;
+				// Next is the value.
 				IoObject *values = IoMessage_locals_valueArgAt_(m, locals, arg+1);
-				// Now process the token and prep the value data accordingly.
-				switch(tok.type())
-				{
-					case Aqsis::type_float:
-					{
-						RtFloat* riValues = IoRenderMan_getFloatParameter(tok, values);
-						plist->tokens[tokenIndex] = token;
-						plist->values[tokenIndex] = riValues;
-						break;
-					}
-					case Aqsis::type_integer:
-					case Aqsis::type_bool:
-					case Aqsis::type_string:
-					case Aqsis::type_triple:
-					case Aqsis::type_point:
-					case Aqsis::type_normal:
-					case Aqsis::type_vector:
-					case Aqsis::type_color:
-					case Aqsis::type_hpoint:
-					case Aqsis::type_matrix:
-					case Aqsis::type_sixteentuple:
-					case Aqsis::type_void:
-					case Aqsis::type_invalid:
-						break;
-				}
-			} 
-			catch(Aqsis::XqValidation& err)
-			{
-				IoState_error_(IOSTATE, m, "%s %s", err.description(), err.what());
+				plist->values[tokenIndex] = IoRenderMan_getParameterValue(self, token, values);
 			}
 		}
+		// Otherwise, we presume it's a map or list(list).
+		else
+		{
+			IoObject *parameters = IoMessage_locals_valueArgAt_(m, locals, startArg);
+			if(ISMAP(parameters))
+			{
+				List* envKeys = IoList_rawList(IoMap_rawKeys(parameters));
+				int numTokens = envKeys->size;
+				plist->tokens = new RtToken[numTokens];
+				plist->values = new RtPointer[numTokens];
+				plist->count = numTokens;
+				LIST_FOREACH(envKeys, i, k, 
+					IOASSERT(ISSEQ(reinterpret_cast<IoObject*>(k)), "parameter names must be sequences");
+					IoObject* values = IoMap_rawAt(parameters, reinterpret_cast<IoSeq*>(k));
+					// TODO: check if it's safe to use the return from IoSeq_asCString
+					plist->tokens[i] = IoSeq_asCString(reinterpret_cast<IoSeq*>(k));
+					plist->values[i] = IoRenderMan_getParameterValue(self, plist->tokens[i], values);
+				)		
+			}
+		}
+	}
+	catch(Aqsis::XqValidation& err)
+	{
+		IoState_error_(IOSTATE, m, "%s %s", err.description(), err.what());
+	}
+	catch(std::runtime_error& err)
+	{
+		IoState_error_(IOSTATE, m, "%s %s", err.what());
 	}
 
 	return plist;
