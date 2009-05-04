@@ -99,37 +99,34 @@ void IoRenderMan_free(IoRenderMan *self)
 	free(IoObject_dataPointer(self));
 }
 
+
 RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
 {
-	// If the parameter is not an array type.
-	if(tok.count() == 1)
+	// If the values have been provided in a list.
+	if(ISLIST(values))
 	{
-		// If the values have been provided in a list.
-		if(ISLIST(values))
+		List *list = IoList_rawList(values);
+		int size = List_size(list);
+		RtFloat* riValues = new RtFloat[size];
+		for(int i = 0; i < size; ++i)
 		{
-			List *list = IoList_rawList(values);
-			int size = List_size(list);
-			RtFloat* riValues = new RtFloat[size];
-			for(int i = 0; i < size; ++i)
-			{
-				IoNumber* num = reinterpret_cast<IoNumber*>(List_at_(list, i));
-				if(!ISNUMBER(num))
-					throw(std::runtime_error("Parameter list item must be a number"));
-				riValues[i] = IoNumber_asDouble(num);
-			}
-			return riValues;
+			IoNumber* num = reinterpret_cast<IoNumber*>(List_at_(list, i));
+			if(!ISNUMBER(num))
+				throw(std::runtime_error("Parameter list item must be a number"));
+			riValues[i] = IoNumber_asDouble(num);
 		}
-		// If it is a single numerical value.
-		else if(ISNUMBER(values))
-		{
-			RtFloat* riValues = new RtFloat[1];
-			riValues[0] = IoNumber_asDouble(values);
-			return riValues;
-		}
-		else
-		{
-			throw(std::runtime_error("Parameter list item must be a list(Number) or Number"));
-		}
+		return riValues;
+	}
+	// If it is a single numerical value.
+	else if(ISNUMBER(values))
+	{
+		RtFloat* riValues = new RtFloat[1];
+		riValues[0] = IoNumber_asDouble(values);
+		return riValues;
+	}
+	else
+	{
+		throw(std::runtime_error("Float type parameter value must be a list(Number) or Number"));
 	}
 	return NULL;
 }
