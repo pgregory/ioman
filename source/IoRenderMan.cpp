@@ -131,6 +131,51 @@ RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* val
 	return NULL;
 }
 
+RtFloat* IoRenderMan_getPointParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
+{
+	// If the values have been provided in a list.
+	if(ISLIST(values))
+	{
+		List *list = IoList_rawList(values);
+		int size = List_size(list);
+		RtFloat* riValues = new RtFloat[size*3];
+		for(int i = 0; i < size; ++i)
+		{
+			IoObject* value = reinterpret_cast<IoObject*>(List_at_(list, i));
+			if(!ISVECTOR(value))
+				throw(std::runtime_error("Parameter list item type RtPoint must be a Vector type"));
+			UArray *vector = IoSeq_rawUArray(value);
+
+			if(UArray_size(vector) < 3)
+				throw(std::runtime_error("Vector argument to RiPoint parameter must contain at least 3 elements"));
+
+			for(int j = 0; j < 3; j++)
+				riValues[i*3+j] = (double)UArray_doubleAt_(vector, j);
+		}
+		return riValues;
+	}
+	// If it is a single RtPoint or Vector value.
+	else if(ISVECTOR(values))
+	{
+		RtFloat* riValues = new RtFloat[3];
+		size_t i;
+		UArray *vector = IoSeq_rawUArray(values);
+
+		if(UArray_size(vector) < 3)
+			throw(std::runtime_error("Vector argument to RiPoint parameter must contain at least 3 elements"));
+
+		for(i = 0; i < 3; i++)
+				riValues[i] = (double)UArray_doubleAt_(vector, i);
+		std::cout << "Done" << std::endl;
+		return riValues;
+	}
+	else
+	{
+		throw(std::runtime_error("Float type parameter value must be a list(Number) or Number"));
+	}
+	return NULL;
+}
+
 RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* values)
 {
 	Aqsis::CqPrimvarToken tok = DATA(self)->tokenDict.parseAndLookup(token);
@@ -145,11 +190,16 @@ RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* v
 		case Aqsis::type_integer:
 		case Aqsis::type_bool:
 		case Aqsis::type_string:
+			break;
 		case Aqsis::type_triple:
 		case Aqsis::type_point:
 		case Aqsis::type_normal:
 		case Aqsis::type_vector:
 		case Aqsis::type_color:
+		{
+			return IoRenderMan_getPointParameter(tok, values);
+			break;
+		}
 		case Aqsis::type_hpoint:
 		case Aqsis::type_matrix:
 		case Aqsis::type_sixteentuple:
@@ -157,6 +207,7 @@ RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* v
 		case Aqsis::type_invalid:
 			break;
 	}
+	throw(std::runtime_error("Unrecognised parameter type."));
 	return NULL;
 }
 
