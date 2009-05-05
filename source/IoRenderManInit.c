@@ -2,7 +2,6 @@
 #include "IoObject.h"
 
 IoObject *IoRenderMan_proto(void *state);
-__declspec(dllexport)
 
 void IoRenderManInit(IoObject *context)
 {

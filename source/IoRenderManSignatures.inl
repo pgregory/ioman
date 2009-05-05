@@ -1,7 +1,6 @@
 
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
-{
-	IoMethodTable methodTable[] = {
+IoMethodTable methodTable[] = {
 		{"RiFrameBegin", IoRenderMan_RiFrameBegin},
 		{"RiFrameEnd", IoRenderMan_RiFrameEnd},
 		{"RiWorldBegin", IoRenderMan_RiWorldBegin},
@@ -96,7 +95,6 @@
 		{"RiErrorHandler", IoRenderMan_RiErrorHandler},
 		{"RiReadArchive", IoRenderMan_RiReadArchive},
 
-		{NULL, NULL},
-	};
-}
+    {NULL, NULL},
+};
 	

@@ -10,12 +10,10 @@
 	<xsl:template match="RiAPI">
 		<!--	Procedures	-->
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
-{
-	IoMethodTable methodTable[] = {
+IoMethodTable methodTable[] = {
 <xsl:apply-templates select="Procedures/Procedure[Rib and not(Rib/CustomImpl)]"/>
-		{NULL, NULL},
-	};
-}
+    {NULL, NULL},
+};
 	</xsl:template>
 
 

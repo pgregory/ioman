@@ -18,7 +18,6 @@
 	<xsl:template match="Procedure">
 IoObject *IoRenderMan_<xsl:value-of select="Name"/>(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
-<xsl:apply-templates select="Arguments" mode="declare"/>
 <xsl:apply-templates select="Arguments" mode="convert_from_message"/>
 <!-- Call the C API function -->
 <xsl:value-of select="concat('&#x9;', Name)"/>
@@ -27,46 +26,23 @@ IoObject *IoRenderMan_<xsl:value-of select="Name"/>(IoRenderMan* self, IoObject*
 }
 	</xsl:template>
 
-	<xsl:template match="Arguments" mode="declare">
-		<xsl:apply-templates select="Argument" mode="declare"/>
-	</xsl:template>
-
-	<xsl:template match="Argument" mode="declare">
-		<xsl:choose>
-			<xsl:when test="contains( Type, 'Array')">
-				<xsl:value-of select="concat('&#x9;', substring-before(Type, 'Array'), '* ', Name, ';&#xa;')"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:value-of select="concat('&#x9;', Type, ' ', Name, ';&#xa;')"/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:template>
-
 	<xsl:template match="Arguments" mode="convert_from_message">
 		<xsl:apply-templates select="Argument" mode="convert_from_message"/>
 		<!-- Read and prepare parameter list -->
 		<xsl:if test="ParamList">
 			<xsl:value-of select="string('&#x9;IoRenderManParameterList plist;&#xa;')"/>
-			<xsl:value-of select="concat('&#x9;IoRenderMan_getParameterList(self, locals, m, ', count(Arguments/Argument), ', IoMessage_argCount(m) - ', count(Arguments/Argument), ', plist);&#xa;')"/>
+			<xsl:value-of select="concat('&#x9;IoRenderMan_getParameterList(self, locals, m, ', count(Argument), ', IoMessage_argCount(m) - ', count(Argument), ', plist);&#xa;')"/>
 		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="Argument" mode="convert_from_message">
 		<xsl:choose>
 			<xsl:when test="contains( Type, 'Array')">
-				<xsl:choose>
-					<xsl:when test="./Length">
-						<xsl:value-of select="./Length"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:text>&#x9;// \note: Need to specify the length method here!&#xa;</xsl:text>
-						<xsl:value-of select="concat('&#x9;int __', Name, '_length = 1;&#xa;')"/>
-					</xsl:otherwise>
-				</xsl:choose>
-				<xsl:value-of select="concat('&#x9;', Name, ' = new ', substring-before(Type, 'Array'), '[__', Name, '_length];&#xa;')"/>
+				<xsl:value-of select="concat('&#x9;', substring-before(Type, 'Array'), '* ', Name, ';&#xa;')"/>
 				<xsl:value-of select="concat('&#x9;int __', Name, '_index;&#xa;')"/>
 				<xsl:value-of select="concat('&#x9;List* __', Name, '_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, ', position()-1, '));&#xa;')"/>
-				<xsl:value-of select="concat('&#x9;IOASSERT(List_size(__', Name, '_list) == __', Name, '_length, &quot;Invalid list length&quot;);&#xa;')"/>
+				<xsl:value-of select="concat('&#x9;int __', Name, '_length = List_size(__', Name, '_list);&#xa;')"/>
+				<xsl:value-of select="concat('&#x9;', Name, ' = new ', substring-before(Type, 'Array'), '[__', Name, '_length];&#xa;')"/>
 				<xsl:value-of select="concat('&#x9;for(__', Name, '_index = 0; __', Name, '_index&lt;__', Name, '_length; __', Name, '_index++)&#xa;')"/>
 				<xsl:text>&#x9;{&#xa;</xsl:text>
 				<xsl:value-of select="concat('&#x9;&#x9;IoObject* entry = reinterpret_cast&lt;IoObject*&gt;(List_at_(__', Name, '_list, __', Name, '_index));&#xa;')"/>
@@ -96,6 +72,7 @@ IoObject *IoRenderMan_<xsl:value-of select="Name"/>(IoRenderMan* self, IoObject*
 				<xsl:text>&#x9;}&#xa;</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
+				<xsl:value-of select="concat('&#x9;', Type, ' ', Name, ';&#xa;')"/>
 				<xsl:choose>
 					<xsl:when test="Type = 'RtBoolean'">
 						<xsl:value-of select="concat('&#x9;', Name, ' = IoMessage_locals_boolArgAt_(m, locals, ', position()-1, ');&#xa;')"/>

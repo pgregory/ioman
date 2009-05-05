@@ -25,7 +25,7 @@ void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtP
 void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value);
 void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value);
 void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist);
-#include "IoRenderManMethods.i"
+#include "IoRenderManMethods.inl"
 
 // _tag makes an IoTag for the bookkeeping of names and methods for this proto
 IoTag *IoRenderMan_newTag(void *state)
@@ -61,8 +61,10 @@ IoObject *IoRenderMan_proto(void *state)
 	IoState_registerProtoWithFunc_(reinterpret_cast<IoState*>(state), self, IoRenderMan_proto);
 
 	// and finally, define the table of methods this proto supports
-#	include "IoRenderManSignatures.i"
-
+	{
+#	    include "IoRenderManSignatures.inl"
+        IoObject_addMethodTable_(self, methodTable);
+    }
 	return self;
 }
 
