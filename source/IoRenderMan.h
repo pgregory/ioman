@@ -1,8 +1,11 @@
 #ifndef IORenderMan_DEFINED
 #define IORenderMan_DEFINED 1
 
+extern "C" {
 #include "IoObject.h"
 #include <ri.h>
+}
+
 #include <tokendictionary.h>
 
 // define a macro that can check whether an IoObject is of our type by checking whether it holds a pointer to our clone function

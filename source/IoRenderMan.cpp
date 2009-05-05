@@ -5,16 +5,27 @@
 Describe your addon here.
 */
 
+extern "C" {
+
 #include "IoState.h"
-#include "IoRenderMan.h"
 #include "IoObject.h"
 #include "IoList.h"
 #include "IoMap.h"
 #include "IoNumber.h"
 
+}
+
+#include "IoRenderMan.h"
+
 #include <iostream>
 
 #define DATA(self) ((IoRenderManData*)IoObject_dataPointer(self))
+
+void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtPoint& value);
+void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value);
+void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value);
+void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist);
+#include "IoRenderManMethods.i"
 
 // _tag makes an IoTag for the bookkeeping of names and methods for this proto
 IoTag *IoRenderMan_newTag(void *state)
@@ -50,17 +61,7 @@ IoObject *IoRenderMan_proto(void *state)
 	IoState_registerProtoWithFunc_(reinterpret_cast<IoState*>(state), self, IoRenderMan_proto);
 
 	// and finally, define the table of methods this proto supports
-	// we just have one method here, returnSelf, then terminate the array
-	// with NULLs
-	{
-		IoMethodTable methodTable[] = {
-		{"riWorldBegin", IoRenderMan_riWorldBegin},
-		{"riWorldEnd", IoRenderMan_riWorldEnd},
-		{"riSphere", IoRenderMan_riSphere},
-		{NULL, NULL},
-		};
-		IoObject_addMethodTable_(self, methodTable);
-	}
+#	include "IoRenderManSignatures.i"
 
 	return self;
 }
@@ -99,6 +100,38 @@ void IoRenderMan_free(IoRenderMan *self)
 	free(IoObject_dataPointer(self));
 }
 
+
+void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtPoint& value)
+{
+	IoObject* ioValue = IoMessage_locals_valueArgAt_(m, locals, index);
+//	IOASSERT(ISVECTOR(ioValue), "Point or Color type value must be a Vector");
+	UArray* ioVector = IoSeq_rawUArray(ioValue);
+//	IOASSERT(UArray_size(ioVector) >= 3, "Point or Color type value must be a Vector with at least 3 elements");
+	value[0] = UArray_doubleAt_(ioVector, 0);
+	value[1] = UArray_doubleAt_(ioVector, 1);
+	value[2] = UArray_doubleAt_(ioVector, 2);
+}
+
+void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value)
+{
+	IoObject* ioValue = IoMessage_locals_valueArgAt_(m, locals, index);
+//	IOASSERT(ISVECTOR(ioValue), "Matrix type value must be a Vector");
+	UArray* ioVector = IoSeq_rawUArray(ioValue);
+//	IOASSERT(UArray_size(ioVector) >= 16, "Matrix type value must be a Vector with at least 16 elements");
+	for(int i = 0; i < 4; ++i)
+		for(int j = 0; j < 4; ++j)
+			value[i][j] = UArray_doubleAt_(ioVector, (i*4)+j);
+}
+
+void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value)
+{
+	IoObject* ioValue = IoMessage_locals_valueArgAt_(m, locals, index);
+//	IOASSERT(ISVECTOR(ioValue), "Bound type value must be a Vector");
+	UArray* ioVector = IoSeq_rawUArray(ioValue);
+//	IOASSERT(UArray_size(ioVector) >= 6, "Bound type value must be a Vector with at least 6 elements");
+	for(int i = 0; i < 6; ++i)
+		value[i] = UArray_doubleAt_(ioVector, i);
+}
 
 RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
 {
@@ -212,12 +245,11 @@ RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* v
 }
 
 
-IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs)
+void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist)
 {
-	IoRenderManParameterList* plist = new IoRenderManParameterList;
-	plist->count = 0;
-	plist->tokens = NULL;
-	plist->values = NULL;
+	plist.count = 0;
+	plist.tokens = NULL;
+	plist.values = NULL;
 
 	try
 	{
@@ -227,37 +259,37 @@ IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject*
 		{
 			int arg = startArg;
 			int numTokens = numExtraArgs/2;
-			plist->tokens = new RtToken[numTokens];
-			plist->values = new RtPointer[numTokens];
-			plist->count = numTokens;
+			plist.tokens = new RtToken[numTokens];
+			plist.values = new RtPointer[numTokens];
+			plist.count = numTokens;
 			// Process each token
 			for(int tokenIndex = 0; tokenIndex < numTokens; ++tokenIndex, arg+=2)
 			{
 				// First of each pair is the name.
 				char* token = IoMessage_locals_cStringArgAt_(m, locals, arg);
-				plist->tokens[tokenIndex] = token;
+				plist.tokens[tokenIndex] = token;
 				// Next is the value.
 				IoObject *values = IoMessage_locals_valueArgAt_(m, locals, arg+1);
-				plist->values[tokenIndex] = IoRenderMan_getParameterValue(self, token, values);
+				plist.values[tokenIndex] = IoRenderMan_getParameterValue(self, token, values);
 			}
 		}
 		// Otherwise, we presume it's a map or list(list).
-		else
+		else if(numExtraArgs == 1)
 		{
 			IoObject *parameters = IoMessage_locals_valueArgAt_(m, locals, startArg);
 			if(ISMAP(parameters))
 			{
 				List* envKeys = IoList_rawList(IoMap_rawKeys(parameters));
 				int numTokens = envKeys->size;
-				plist->tokens = new RtToken[numTokens];
-				plist->values = new RtPointer[numTokens];
-				plist->count = numTokens;
+				plist.tokens = new RtToken[numTokens];
+				plist.values = new RtPointer[numTokens];
+				plist.count = numTokens;
 				LIST_FOREACH(envKeys, i, k, 
 					IOASSERT(ISSEQ(reinterpret_cast<IoObject*>(k)), "parameter names must be sequences");
 					IoObject* values = IoMap_rawAt(parameters, reinterpret_cast<IoSeq*>(k));
 					// TODO: check if it's safe to use the return from IoSeq_asCString
-					plist->tokens[i] = IoSeq_asCString(reinterpret_cast<IoSeq*>(k));
-					plist->values[i] = IoRenderMan_getParameterValue(self, plist->tokens[i], values);
+					plist.tokens[i] = IoSeq_asCString(reinterpret_cast<IoSeq*>(k));
+					plist.values[i] = IoRenderMan_getParameterValue(self, plist.tokens[i], values);
 				)		
 			}
 		}
@@ -270,8 +302,6 @@ IoRenderManParameterList* IoRenderMan_getParameterList(IoObject* self, IoObject*
 	{
 		IoState_error_(IOSTATE, m, "%s %s", err.what());
 	}
-
-	return plist;
 }
 
 void IoRenderMan_freeParameterList(IoRenderManParameterList* plist)
@@ -280,37 +310,3 @@ void IoRenderMan_freeParameterList(IoRenderManParameterList* plist)
 	delete(plist);
 }
 
-
-IoObject *IoRenderMan_riWorldBegin(IoRenderMan *self, IoObject *locals, IoMessage *m)
-{
-	RiContext(DATA(self)->riContext);
-	RiWorldBegin();
-	return self;
-}
-
-IoObject *IoRenderMan_riWorldEnd(IoRenderMan *self, IoObject *locals, IoMessage *m)
-{
-	RiContext(DATA(self)->riContext);
-	RiWorldEnd();
-	return self;
-}
-
-IoObject *IoRenderMan_riSphere(IoRenderMan *self, IoObject *locals, IoMessage *m)
-{
-	// Get the arguments from the message.
-	RtFloat radius = IoMessage_locals_doubleArgAt_(m, locals, 0);
-	RtFloat zmin = IoMessage_locals_doubleArgAt_(m, locals, 1);
-	RtFloat zmax = IoMessage_locals_doubleArgAt_(m, locals, 2);
-	RtFloat thetamax = IoMessage_locals_doubleArgAt_(m, locals, 3);
-
-	// Check for any parameterlist.
-	IoRenderManParameterList* plist = NULL;
-	if(IoMessage_argCount(m) > 4)
-		plist = IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4);
-
-	// Ensure we're in the right context
-	RiContext(DATA(self)->riContext);
-	// ...and run the Ri procedure.
-	RiSphereV(radius, zmin, zmax, thetamax, plist->count, plist->tokens, plist->values);
-	return self;
-}
