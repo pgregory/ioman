@@ -11,7 +11,7 @@ n4 := RtPoint clone set(1,1,-1)
 
 rm option("searchpath", "shader", "../../shaders:./:&")
 
-rm display("poly_test.tif", "framebuffer", "rgba"/*, Map with("string compression", "lzw")*/)
+rm display("poly_test.tif", "framebuffer", "rgba", Map with("string compression", "lzw"))
 
 rm format(200,150,1)
 rm shadingRate(2)
