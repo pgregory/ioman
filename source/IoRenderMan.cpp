@@ -21,11 +21,21 @@ extern "C" {
 
 #define DATA(self) ((IoRenderManData*)IoObject_dataPointer(self))
 
+IoObject *IoRenderMan_proto(void *state);
 void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtPoint& value);
 void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value);
 void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value);
 void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist);
 #include "IoRenderManMethods.inl"
+
+IoObject *IoRenderMan_with(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	IoRenderMan* clone = IOCLONE(IoState_protoWithInitFunction_(IOSTATE, IoRenderMan_proto));
+	char* ribFile  = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiBegin(ribFile);
+	DATA(self)->riContext = RiGetContext();
+	return self;
+}
 
 // _tag makes an IoTag for the bookkeeping of names and methods for this proto
 IoTag *IoRenderMan_newTag(void *state)
@@ -54,7 +64,7 @@ IoObject *IoRenderMan_proto(void *state)
 
 	// Setup the data pointer
 	IoObject_setDataPointer_(self, new IoRenderManData);
-	RiBegin("test.rib");
+	RiBegin(RI_NULL);
 	DATA(self)->riContext = RiGetContext();
 
 	// then register this proto generator
@@ -65,6 +75,15 @@ IoObject *IoRenderMan_proto(void *state)
 #	    include "IoRenderManSignatures.inl"
         IoObject_addMethodTable_(self, methodTable);
     }
+	{
+		IoMethodTable methodTable[] = {
+			{"with", IoRenderMan_with},
+	
+			{NULL, NULL}
+		};
+		IoObject_addMethodTable_(self, methodTable);
+	}
+		
 	return self;
 }
 
@@ -73,7 +92,7 @@ IoObject *IoRenderMan_rawClone(IoRenderMan *proto)
 {
 	IoObject *self = IoObject_rawClonePrimitive(proto);
 	IoObject_setDataPointer_(self, new IoRenderManData);
-	RiBegin("test.rib");
+	RiBegin(RI_NULL);
 	DATA(self)->riContext = RiGetContext();
 	// This is where any object-specific data would be copied
 	return self;

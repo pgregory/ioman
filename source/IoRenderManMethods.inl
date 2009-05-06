@@ -1,7 +1,7 @@
 
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 		
-IoObject *IoRenderMan_RiFrameBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_frameBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt number;
 	number = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -9,25 +9,25 @@ IoObject *IoRenderMan_RiFrameBegin(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiFrameEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_frameEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiFrameEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiWorldBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_worldBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiWorldBegin();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiWorldEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_worldEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiWorldEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiIfBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_ifBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString condition;
 	condition = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -35,7 +35,7 @@ IoObject *IoRenderMan_RiIfBegin(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiElseIf(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_elseIf(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString condition;
 	condition = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -43,19 +43,19 @@ IoObject *IoRenderMan_RiElseIf(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiElse(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_else(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiElse();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiIfEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_ifEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiIfEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiFormat(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_format(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt xresolution;
 	xresolution = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -67,7 +67,7 @@ IoObject *IoRenderMan_RiFormat(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiFrameAspectRatio(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_frameAspectRatio(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat frameratio;
 	frameratio = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -75,7 +75,7 @@ IoObject *IoRenderMan_RiFrameAspectRatio(IoRenderMan* self, IoObject* locals, Io
 	return self;
 }
 	
-IoObject *IoRenderMan_RiScreenWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_screenWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat left;
 	left = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -89,7 +89,7 @@ IoObject *IoRenderMan_RiScreenWindow(IoRenderMan* self, IoObject* locals, IoMess
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCropWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_cropWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat xmin;
 	xmin = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -103,7 +103,7 @@ IoObject *IoRenderMan_RiCropWindow(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiProjection(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_projection(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -113,7 +113,7 @@ IoObject *IoRenderMan_RiProjection(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiClipping(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_clipping(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat cnear;
 	cnear = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -123,7 +123,7 @@ IoObject *IoRenderMan_RiClipping(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiClippingPlane(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_clippingPlane(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat x;
 	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -141,7 +141,7 @@ IoObject *IoRenderMan_RiClippingPlane(IoRenderMan* self, IoObject* locals, IoMes
 	return self;
 }
 	
-IoObject *IoRenderMan_RiShutter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_shutter(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat opentime;
 	opentime = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -151,7 +151,7 @@ IoObject *IoRenderMan_RiShutter(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPixelVariance(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_pixelVariance(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat variance;
 	variance = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -159,7 +159,7 @@ IoObject *IoRenderMan_RiPixelVariance(IoRenderMan* self, IoObject* locals, IoMes
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPixelSamples(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_pixelSamples(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat xsamples;
 	xsamples = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -169,7 +169,7 @@ IoObject *IoRenderMan_RiPixelSamples(IoRenderMan* self, IoObject* locals, IoMess
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPixelFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_pixelFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFilterFunc function;
 	// Unhandled type.
@@ -181,7 +181,7 @@ IoObject *IoRenderMan_RiPixelFilter(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiExposure(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_exposure(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat gain;
 	gain = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -191,7 +191,7 @@ IoObject *IoRenderMan_RiExposure(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiImager(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_imager(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -201,7 +201,7 @@ IoObject *IoRenderMan_RiImager(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiQuantize(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_quantize(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -217,7 +217,7 @@ IoObject *IoRenderMan_RiQuantize(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiDisplay(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_display(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -231,7 +231,7 @@ IoObject *IoRenderMan_RiDisplay(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiHider(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_hider(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -241,7 +241,7 @@ IoObject *IoRenderMan_RiHider(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiRelativeDetail(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_relativeDetail(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat relativedetail;
 	relativedetail = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -249,7 +249,7 @@ IoObject *IoRenderMan_RiRelativeDetail(IoRenderMan* self, IoObject* locals, IoMe
 	return self;
 }
 	
-IoObject *IoRenderMan_RiOption(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_option(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -259,19 +259,19 @@ IoObject *IoRenderMan_RiOption(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiAttributeBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_attributeBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiAttributeBegin();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiAttributeEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_attributeEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiAttributeEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiColor(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_color(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtColor Cq;
 	IoRenderMan_getPointArgument(m, locals, 0, Cq);
@@ -279,7 +279,7 @@ IoObject *IoRenderMan_RiColor(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiOpacity(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_opacity(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtColor Os;
 	IoRenderMan_getPointArgument(m, locals, 0, Os);
@@ -287,7 +287,7 @@ IoObject *IoRenderMan_RiOpacity(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTextureCoordinates(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_textureCoordinates(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat s1;
 	s1 = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -309,7 +309,7 @@ IoObject *IoRenderMan_RiTextureCoordinates(IoRenderMan* self, IoObject* locals, 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSurface(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_surface(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -319,7 +319,7 @@ IoObject *IoRenderMan_RiSurface(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiDisplacement(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_displacement(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -329,7 +329,7 @@ IoObject *IoRenderMan_RiDisplacement(IoRenderMan* self, IoObject* locals, IoMess
 	return self;
 }
 	
-IoObject *IoRenderMan_RiAtmosphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_atmosphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -339,7 +339,7 @@ IoObject *IoRenderMan_RiAtmosphere(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiInterior(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_interior(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -349,7 +349,7 @@ IoObject *IoRenderMan_RiInterior(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiExterior(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_exterior(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -359,7 +359,7 @@ IoObject *IoRenderMan_RiExterior(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiShaderLayer(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_shaderLayer(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -373,7 +373,7 @@ IoObject *IoRenderMan_RiShaderLayer(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiConnectShaderLayers(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_connectShaderLayers(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -389,7 +389,7 @@ IoObject *IoRenderMan_RiConnectShaderLayers(IoRenderMan* self, IoObject* locals,
 	return self;
 }
 	
-IoObject *IoRenderMan_RiShadingRate(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_shadingRate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat size;
 	size = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -397,7 +397,7 @@ IoObject *IoRenderMan_RiShadingRate(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiShadingInterpolation(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_shadingInterpolation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -405,7 +405,7 @@ IoObject *IoRenderMan_RiShadingInterpolation(IoRenderMan* self, IoObject* locals
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMatte(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_matte(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBoolean onoff;
 	onoff = IoMessage_locals_boolArgAt_(m, locals, 0);
@@ -413,7 +413,7 @@ IoObject *IoRenderMan_RiMatte(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiBound(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_bound(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBound bound;
 	IoRenderMan_getBoundArgument(m, locals, 0, bound);
@@ -421,7 +421,7 @@ IoObject *IoRenderMan_RiBound(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiDetail(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_detail(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBound bound;
 	IoRenderMan_getBoundArgument(m, locals, 0, bound);
@@ -429,7 +429,7 @@ IoObject *IoRenderMan_RiDetail(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiDetailRange(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_detailRange(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat offlow;
 	offlow = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -443,7 +443,7 @@ IoObject *IoRenderMan_RiDetailRange(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiGeometricApproximation(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_geometricApproximation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -453,7 +453,7 @@ IoObject *IoRenderMan_RiGeometricApproximation(IoRenderMan* self, IoObject* loca
 	return self;
 }
 	
-IoObject *IoRenderMan_RiOrientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_orientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken orientation;
 	orientation = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -461,13 +461,13 @@ IoObject *IoRenderMan_RiOrientation(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiReverseOrientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_reverseOrientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiReverseOrientation();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSides(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_sides(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nsides;
 	nsides = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -475,13 +475,13 @@ IoObject *IoRenderMan_RiSides(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiIdentity(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_identity(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiIdentity();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_transform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtMatrix transform;
 	IoRenderMan_getMatrixArgument(m, locals, 0, transform);
@@ -489,7 +489,7 @@ IoObject *IoRenderMan_RiTransform(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 	
-IoObject *IoRenderMan_RiConcatTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_concatTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtMatrix transform;
 	IoRenderMan_getMatrixArgument(m, locals, 0, transform);
@@ -497,7 +497,7 @@ IoObject *IoRenderMan_RiConcatTransform(IoRenderMan* self, IoObject* locals, IoM
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPerspective(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_perspective(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat fov;
 	fov = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -505,7 +505,7 @@ IoObject *IoRenderMan_RiPerspective(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTranslate(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_translate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat dx;
 	dx = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -517,7 +517,7 @@ IoObject *IoRenderMan_RiTranslate(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 	
-IoObject *IoRenderMan_RiRotate(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_rotate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat angle;
 	angle = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -531,7 +531,7 @@ IoObject *IoRenderMan_RiRotate(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiScale(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_scale(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat sx;
 	sx = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -543,7 +543,7 @@ IoObject *IoRenderMan_RiScale(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSkew(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_skew(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat angle;
 	angle = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -563,7 +563,7 @@ IoObject *IoRenderMan_RiSkew(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCoordinateSystem(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_coordinateSystem(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken space;
 	space = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -571,7 +571,7 @@ IoObject *IoRenderMan_RiCoordinateSystem(IoRenderMan* self, IoObject* locals, Io
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCoordSysTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_coordSysTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken space;
 	space = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -579,19 +579,19 @@ IoObject *IoRenderMan_RiCoordSysTransform(IoRenderMan* self, IoObject* locals, I
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTransformBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_transformBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiTransformBegin();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTransformEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_transformEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiTransformEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiResource(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_resource(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken handle;
 	handle = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -603,19 +603,19 @@ IoObject *IoRenderMan_RiResource(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiResourceBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_resourceBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiResourceBegin();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiResourceEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_resourceEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiResourceEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiAttribute(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_attribute(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -625,7 +625,7 @@ IoObject *IoRenderMan_RiAttribute(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPolygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_polygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nvertices;
 	nvertices = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -635,7 +635,7 @@ IoObject *IoRenderMan_RiPolygon(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiGeneralPolygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_generalPolygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nloops;
 	nloops = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -656,7 +656,7 @@ IoObject *IoRenderMan_RiGeneralPolygon(IoRenderMan* self, IoObject* locals, IoMe
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPointsPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_pointsPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt npolys;
 	npolys = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -688,7 +688,7 @@ IoObject *IoRenderMan_RiPointsPolygons(IoRenderMan* self, IoObject* locals, IoMe
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPointsGeneralPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_pointsGeneralPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt npolys;
 	npolys = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -731,7 +731,7 @@ IoObject *IoRenderMan_RiPointsGeneralPolygons(IoRenderMan* self, IoObject* local
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_patch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -741,7 +741,7 @@ IoObject *IoRenderMan_RiPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPatchMesh(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_patchMesh(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -759,7 +759,7 @@ IoObject *IoRenderMan_RiPatchMesh(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 	
-IoObject *IoRenderMan_RiNuPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_nuPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nu;
 	nu = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -805,7 +805,7 @@ IoObject *IoRenderMan_RiNuPatch(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTrimCurve(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_trimCurve(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nloops;
 	nloops = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -912,7 +912,7 @@ IoObject *IoRenderMan_RiTrimCurve(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_sphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat radius;
 	radius = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -928,7 +928,7 @@ IoObject *IoRenderMan_RiSphere(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCone(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_cone(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat height;
 	height = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -942,7 +942,7 @@ IoObject *IoRenderMan_RiCone(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCylinder(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_cylinder(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat radius;
 	radius = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -958,7 +958,7 @@ IoObject *IoRenderMan_RiCylinder(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiParaboloid(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_paraboloid(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat rmax;
 	rmax = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -974,7 +974,7 @@ IoObject *IoRenderMan_RiParaboloid(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiDisk(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_disk(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat height;
 	height = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -988,7 +988,7 @@ IoObject *IoRenderMan_RiDisk(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiTorus(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_torus(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat majorrad;
 	majorrad = IoMessage_locals_doubleArgAt_(m, locals, 0);
@@ -1006,7 +1006,7 @@ IoObject *IoRenderMan_RiTorus(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
-IoObject *IoRenderMan_RiPoints(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_points(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt npoints;
 	npoints = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -1016,7 +1016,7 @@ IoObject *IoRenderMan_RiPoints(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiCurves(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_curves(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1041,7 +1041,7 @@ IoObject *IoRenderMan_RiCurves(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiBlobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nleaf;
 	nleaf = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -1089,7 +1089,7 @@ IoObject *IoRenderMan_RiBlobby(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
-IoObject *IoRenderMan_RiGeometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1099,7 +1099,7 @@ IoObject *IoRenderMan_RiGeometry(IoRenderMan* self, IoObject* locals, IoMessage*
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSolidBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_solidBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1107,25 +1107,25 @@ IoObject *IoRenderMan_RiSolidBegin(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiSolidEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_solidEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiSolidEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiObjectEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_objectEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiObjectEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMotionEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_motionEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiMotionEnd();
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMakeTexture(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_makeTexture(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString imagefile;
 	imagefile = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1147,7 +1147,7 @@ IoObject *IoRenderMan_RiMakeTexture(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMakeLatLongEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_makeLatLongEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString imagefile;
 	imagefile = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1165,7 +1165,7 @@ IoObject *IoRenderMan_RiMakeLatLongEnvironment(IoRenderMan* self, IoObject* loca
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMakeCubeFaceEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_makeCubeFaceEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString px;
 	px = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1195,7 +1195,7 @@ IoObject *IoRenderMan_RiMakeCubeFaceEnvironment(IoRenderMan* self, IoObject* loc
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMakeShadow(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_makeShadow(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString picfile;
 	picfile = IoMessage_locals_cStringArgAt_(m, locals, 0);
@@ -1207,7 +1207,7 @@ IoObject *IoRenderMan_RiMakeShadow(IoRenderMan* self, IoObject* locals, IoMessag
 	return self;
 }
 	
-IoObject *IoRenderMan_RiMakeOcclusion(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_makeOcclusion(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt npics;
 	npics = IoMessage_locals_intArgAt_(m, locals, 0);
@@ -1229,7 +1229,7 @@ IoObject *IoRenderMan_RiMakeOcclusion(IoRenderMan* self, IoObject* locals, IoMes
 	return self;
 }
 	
-IoObject *IoRenderMan_RiErrorHandler(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_errorHandler(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtErrorFunc handler;
 	// Unhandled type.
@@ -1237,7 +1237,7 @@ IoObject *IoRenderMan_RiErrorHandler(IoRenderMan* self, IoObject* locals, IoMess
 	return self;
 }
 	
-IoObject *IoRenderMan_RiReadArchive(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_readArchive(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);

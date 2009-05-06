@@ -4,6 +4,7 @@
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 	<xsl:output method="text"/>
 	<xsl:strip-space elements="RiAPI"/>
+	<xsl:include href="utils.xsl"/>
 
 
 	<!--	API	-->
@@ -16,7 +17,7 @@
 
 
 	<xsl:template match="Procedure">
-IoObject *IoRenderMan_<xsl:value-of select="Name"/>(IoRenderMan* self, IoObject* locals, IoMessage* m)
+IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 <xsl:apply-templates select="Arguments" mode="convert_from_message"/>
 <!-- Call the C API function -->
