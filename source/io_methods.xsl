@@ -11,7 +11,7 @@
 	<xsl:template match="RiAPI">
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 		<!--	Procedures	-->
-		<xsl:apply-templates select="Procedures/Procedure[Rib and not(Rib/CustomImpl)]"/>
+		<xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin')]"/>
 		<xsl:text>&#xa;&#xa;</xsl:text>
 	</xsl:template>
 
@@ -73,7 +73,9 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 				<xsl:text>&#x9;}&#xa;</xsl:text>
 			</xsl:when>
 			<xsl:otherwise>
-				<xsl:value-of select="concat('&#x9;', Type, ' ', Name, ';&#xa;')"/>
+				<xsl:if test="Type != ''">
+					<xsl:value-of select="concat('&#x9;', Type, ' ', Name, ';&#xa;')"/>
+				</xsl:if>
 				<xsl:choose>
 					<xsl:when test="Type = 'RtBoolean'">
 						<xsl:value-of select="concat('&#x9;', Name, ' = IoMessage_locals_boolArgAt_(m, locals, ', position()-1, ');&#xa;')"/>

@@ -12,7 +12,7 @@
 		<!--	Procedures	-->
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 IoMethodTable methodTable[] = {
-<xsl:apply-templates select="Procedures/Procedure[Rib and not(Rib/CustomImpl)]"/>
+<xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin')]"/>
 	{NULL, NULL},
 };
 	</xsl:template>

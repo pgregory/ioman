@@ -1,6 +1,16 @@
 
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 		
+IoObject *IoRenderMan_declare(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtString name;
+	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RtString declaration;
+	declaration = IoMessage_locals_cStringArgAt_(m, locals, 1);
+	RiDeclare(name, declaration);
+	return self;
+}
+	
 IoObject *IoRenderMan_frameBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt number;
@@ -141,6 +151,18 @@ IoObject *IoRenderMan_clippingPlane(IoRenderMan* self, IoObject* locals, IoMessa
 	return self;
 }
 	
+IoObject *IoRenderMan_depthOfField(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat fstop;
+	fstop = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat focallength;
+	focallength = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat focaldistance;
+	focaldistance = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiDepthOfField(fstop, focallength, focaldistance);
+	return self;
+}
+	
 IoObject *IoRenderMan_shutter(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat opentime;
@@ -241,6 +263,36 @@ IoObject *IoRenderMan_hider(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
+IoObject *IoRenderMan_colorSamples(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt N;
+	N = IoMessage_locals_intArgAt_(m, locals, 0);
+	RtFloat* nRGB;
+	int __nRGB_index;
+	List* __nRGB_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 1));
+	int __nRGB_length = List_size(__nRGB_list);
+	nRGB = new RtFloat[__nRGB_length];
+	for(__nRGB_index = 0; __nRGB_index<__nRGB_length; __nRGB_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__nRGB_list, __nRGB_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
+		nRGB[__nRGB_index] = IoNumber_asFloat(entry);
+	}
+	RtFloat* RGBn;
+	int __RGBn_index;
+	List* __RGBn_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 2));
+	int __RGBn_length = List_size(__RGBn_list);
+	RGBn = new RtFloat[__RGBn_length];
+	for(__RGBn_index = 0; __RGBn_index<__RGBn_length; __RGBn_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__RGBn_list, __RGBn_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
+		RGBn[__RGBn_index] = IoNumber_asFloat(entry);
+	}
+	RiColorSamples(N, nRGB, RGBn);
+	return self;
+}
+	
 IoObject *IoRenderMan_relativeDetail(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat relativedetail;
@@ -306,6 +358,36 @@ IoObject *IoRenderMan_textureCoordinates(IoRenderMan* self, IoObject* locals, Io
 	RtFloat t4;
 	t4 = IoMessage_locals_doubleArgAt_(m, locals, 7);
 	RiTextureCoordinates(s1, t1, s2, t2, s3, t3, s4, t4);
+	return self;
+}
+	
+IoObject *IoRenderMan_lightSource(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken name;
+	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiLightSourceV(name, plist.count, plist.tokens, plist.values);
+	return self;
+}
+	
+IoObject *IoRenderMan_areaLightSource(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken name;
+	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiAreaLightSourceV(name, plist.count, plist.tokens, plist.values);
+	return self;
+}
+	
+IoObject *IoRenderMan_illuminate(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtLightHandle light;
+	// Unhandled type.
+	RtBoolean onoff;
+	onoff = IoMessage_locals_boolArgAt_(m, locals, 1);
+	RiIlluminate(light, onoff);
 	return self;
 }
 	
@@ -731,6 +813,20 @@ IoObject *IoRenderMan_pointsGeneralPolygons(IoRenderMan* self, IoObject* locals,
 	return self;
 }
 	
+IoObject *IoRenderMan_basis(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtBasis ubasis;
+	IoRenderMan_getMatrixArgument(m, locals, 0, ubasis);
+	RtInt ustep;
+	ustep = IoMessage_locals_intArgAt_(m, locals, 1);
+	RtBasis vbasis;
+	IoRenderMan_getMatrixArgument(m, locals, 2, vbasis);
+	RtInt vstep;
+	vstep = IoMessage_locals_intArgAt_(m, locals, 3);
+	RiBasis(ubasis, ustep, vbasis, vstep);
+	return self;
+}
+	
 IoObject *IoRenderMan_patch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
@@ -912,6 +1008,85 @@ IoObject *IoRenderMan_trimCurve(IoRenderMan* self, IoObject* locals, IoMessage* 
 	return self;
 }
 	
+IoObject *IoRenderMan_subdivisionMesh(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken scheme;
+	scheme = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RtInt nfaces;
+	nfaces = IoMessage_locals_intArgAt_(m, locals, 1);
+	RtInt* nvertices;
+	int __nvertices_index;
+	List* __nvertices_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 2));
+	int __nvertices_length = List_size(__nvertices_list);
+	nvertices = new RtInt[__nvertices_length];
+	for(__nvertices_index = 0; __nvertices_index<__nvertices_length; __nvertices_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__nvertices_list, __nvertices_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtIntArray");
+		nvertices[__nvertices_index] = IoNumber_asInt(entry);
+	}
+	RtInt* vertices;
+	int __vertices_index;
+	List* __vertices_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 3));
+	int __vertices_length = List_size(__vertices_list);
+	vertices = new RtInt[__vertices_length];
+	for(__vertices_index = 0; __vertices_index<__vertices_length; __vertices_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__vertices_list, __vertices_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtIntArray");
+		vertices[__vertices_index] = IoNumber_asInt(entry);
+	}
+	RtInt ntags;
+	ntags = IoMessage_locals_intArgAt_(m, locals, 4);
+	RtToken* tags;
+	int __tags_index;
+	List* __tags_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 5));
+	int __tags_length = List_size(__tags_list);
+	tags = new RtToken[__tags_length];
+	for(__tags_index = 0; __tags_index<__tags_length; __tags_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__tags_list, __tags_index));
+	// RtTokenArray not yet supported.
+	}
+	RtInt* nargs;
+	int __nargs_index;
+	List* __nargs_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 6));
+	int __nargs_length = List_size(__nargs_list);
+	nargs = new RtInt[__nargs_length];
+	for(__nargs_index = 0; __nargs_index<__nargs_length; __nargs_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__nargs_list, __nargs_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtIntArray");
+		nargs[__nargs_index] = IoNumber_asInt(entry);
+	}
+	RtInt* intargs;
+	int __intargs_index;
+	List* __intargs_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 7));
+	int __intargs_length = List_size(__intargs_list);
+	intargs = new RtInt[__intargs_length];
+	for(__intargs_index = 0; __intargs_index<__intargs_length; __intargs_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__intargs_list, __intargs_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtIntArray");
+		intargs[__intargs_index] = IoNumber_asInt(entry);
+	}
+	RtFloat* floatargs;
+	int __floatargs_index;
+	List* __floatargs_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 8));
+	int __floatargs_length = List_size(__floatargs_list);
+	floatargs = new RtFloat[__floatargs_length];
+	for(__floatargs_index = 0; __floatargs_index<__floatargs_length; __floatargs_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__floatargs_list, __floatargs_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
+		floatargs[__floatargs_index] = IoNumber_asFloat(entry);
+	}
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 9, IoMessage_argCount(m) - 9, plist);
+	RiSubdivisionMeshV(scheme, nfaces, nvertices, vertices, ntags, tags, nargs, intargs, floatargs, plist.count, plist.tokens, plist.values);
+	return self;
+}
+	
 IoObject *IoRenderMan_sphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat radius;
@@ -955,6 +1130,20 @@ IoObject *IoRenderMan_cylinder(IoRenderMan* self, IoObject* locals, IoMessage* m
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
 	RiCylinderV(radius, zmin, zmax, thetamax, plist.count, plist.tokens, plist.values);
+	return self;
+}
+	
+IoObject *IoRenderMan_hyperboloid(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPoint point1;
+	IoRenderMan_getPointArgument(m, locals, 0, point1);
+	RtPoint point2;
+	IoRenderMan_getPointArgument(m, locals, 1, point2);
+	RtFloat thetamax;
+	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiHyperboloidV(point1, point2, thetamax, plist.count, plist.tokens, plist.values);
 	return self;
 }
 	
@@ -1089,6 +1278,20 @@ IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 	
+IoObject *IoRenderMan_procedural(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPointer data;
+	// Unhandled type.
+	RtBound bound;
+	IoRenderMan_getBoundArgument(m, locals, 1, bound);
+	RtProcSubdivFunc refineproc;
+	// Unhandled type.
+	RtProcFreeFunc freeproc;
+	// Unhandled type.
+	RiProcedural(data, bound, refineproc, freeproc);
+	return self;
+}
+	
 IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
@@ -1113,9 +1316,23 @@ IoObject *IoRenderMan_solidEnd(IoRenderMan* self, IoObject* locals, IoMessage* m
 	return self;
 }
 	
+IoObject *IoRenderMan_objectBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RiObjectBegin();
+	return self;
+}
+	
 IoObject *IoRenderMan_objectEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiObjectEnd();
+	return self;
+}
+	
+IoObject *IoRenderMan_objectInstance(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtObjectHandle handle;
+	// Unhandled type.
+	RiObjectInstance(handle);
 	return self;
 }
 	

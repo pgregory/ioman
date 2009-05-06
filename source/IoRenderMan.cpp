@@ -154,6 +154,37 @@ void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtB
 		value[i] = UArray_doubleAt_(ioVector, i);
 }
 
+RtString* IoRenderMan_getStringParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
+{
+	// If the values have been provided in a list.
+	if(ISLIST(values))
+	{
+		List *list = IoList_rawList(values);
+		int size = List_size(list);
+		RtString* riValues = new RtString[size];
+		for(int i = 0; i < size; ++i)
+		{
+			IoSeq* seq = reinterpret_cast<IoSeq*>(List_at_(list, i));
+			if(!ISSEQ(seq))
+				throw(std::runtime_error("Parameter list item must be a sequence"));
+			riValues[i] = IoSeq_asCString(seq);
+		}
+		return riValues;
+	}
+	// If it is a single numerical value.
+	else if(ISSEQ(values))
+	{
+		RtString* riValues = new RtString[1];
+		riValues[0] = IoSeq_asCString(values);
+		return riValues;
+	}
+	else
+	{
+		throw(std::runtime_error("String type parameter value must be a list(Sequence) or Sequence"));
+	}
+	return NULL;
+}
+
 RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
 {
 	// If the values have been provided in a list.
@@ -176,6 +207,38 @@ RtFloat* IoRenderMan_getFloatParameter(Aqsis::CqPrimvarToken& tok, IoObject* val
 	{
 		RtFloat* riValues = new RtFloat[1];
 		riValues[0] = IoNumber_asDouble(values);
+		return riValues;
+	}
+	else
+	{
+		throw(std::runtime_error("Float type parameter value must be a list(Number) or Number"));
+	}
+	return NULL;
+}
+
+
+RtInt* IoRenderMan_getIntegerParameter(Aqsis::CqPrimvarToken& tok, IoObject* values)
+{
+	// If the values have been provided in a list.
+	if(ISLIST(values))
+	{
+		List *list = IoList_rawList(values);
+		int size = List_size(list);
+		RtInt* riValues = new RtInt[size];
+		for(int i = 0; i < size; ++i)
+		{
+			IoNumber* num = reinterpret_cast<IoNumber*>(List_at_(list, i));
+			if(!ISNUMBER(num))
+				throw(std::runtime_error("Parameter list item must be a number"));
+			riValues[i] = IoNumber_asInt(num);
+		}
+		return riValues;
+	}
+	// If it is a single numerical value.
+	else if(ISNUMBER(values))
+	{
+		RtInt* riValues = new RtInt[1];
+		riValues[0] = IoNumber_asInt(values);
 		return riValues;
 	}
 	else
@@ -220,7 +283,6 @@ RtFloat* IoRenderMan_getPointParameter(Aqsis::CqPrimvarToken& tok, IoObject* val
 
 		for(i = 0; i < 3; i++)
 				riValues[i] = (double)UArray_doubleAt_(vector, i);
-		std::cout << "Done" << std::endl;
 		return riValues;
 	}
 	else
@@ -242,9 +304,17 @@ RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* v
 			break;
 		}
 		case Aqsis::type_integer:
-		case Aqsis::type_bool:
-		case Aqsis::type_string:
+		{
+			return IoRenderMan_getIntegerParameter(tok, values);
 			break;
+		}
+		case Aqsis::type_bool:
+			break;
+		case Aqsis::type_string:
+		{
+			return IoRenderMan_getStringParameter(tok, values);
+			break;
+		}
 		case Aqsis::type_triple:
 		case Aqsis::type_point:
 		case Aqsis::type_normal:
@@ -261,7 +331,7 @@ RtPointer IoRenderMan_getParameterValue(IoObject *self, char* token, IoObject* v
 		case Aqsis::type_invalid:
 			break;
 	}
-	throw(std::runtime_error("Unrecognised parameter type."));
+	throw(std::runtime_error("Unhandled parameter type."));
 	return NULL;
 }
 
@@ -321,7 +391,7 @@ void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m
 	}
 	catch(std::runtime_error& err)
 	{
-		IoState_error_(IOSTATE, m, "%s %s", err.what());
+		IoState_error_(IOSTATE, m, "%s", err.what());
 	}
 }
 
