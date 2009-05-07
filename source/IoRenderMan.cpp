@@ -37,6 +37,29 @@ IoObject *IoRenderMan_with(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	return self;
 }
 
+IoObject *IoRenderMan_motionBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt N;
+	N = IoMessage_locals_intArgAt_(m, locals, 0);
+	IoObject *times = IoMessage_locals_valueArgAt_(m, locals, 1);
+	if(ISLIST(times))
+	{
+		List *list = IoList_rawList(times);
+		int size = List_size(list);
+		RtFloat* riTimes = new RtFloat[size];
+		for(int i = 0; i < size; ++i)
+		{
+			IoNumber* time = reinterpret_cast<IoNumber*>(List_at_(list, i));
+			if(!ISNUMBER(time))
+				throw(std::runtime_error("Motion time must be a number"));
+			riTimes[i] = IoNumber_asDouble(time);
+		}
+		RiMotionBeginV(N, riTimes);
+	}
+	
+	return self;
+}
+
 // _tag makes an IoTag for the bookkeeping of names and methods for this proto
 IoTag *IoRenderMan_newTag(void *state)
 {
@@ -78,6 +101,7 @@ IoObject *IoRenderMan_proto(void *state)
 	{
 		IoMethodTable methodTable[] = {
 			{"with", IoRenderMan_with},
+			{"motionBegin", IoRenderMan_motionBegin},
 	
 			{NULL, NULL}
 		};
