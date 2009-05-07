@@ -26,6 +26,7 @@ void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtP
 void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value);
 void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value);
 void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist);
+void IoRenderMan_freeParameterList(IoRenderManParameterList& plist);
 #include "IoRenderManMethods.inl"
 
 IoObject *IoRenderMan_with(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -39,9 +40,7 @@ IoObject *IoRenderMan_with(IoRenderMan* self, IoObject* locals, IoMessage* m)
 
 IoObject *IoRenderMan_motionBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
-	RtInt N;
-	N = IoMessage_locals_intArgAt_(m, locals, 0);
-	IoObject *times = IoMessage_locals_valueArgAt_(m, locals, 1);
+	IoObject *times = IoMessage_locals_valueArgAt_(m, locals, 0);
 	if(ISLIST(times))
 	{
 		List *list = IoList_rawList(times);
@@ -54,7 +53,7 @@ IoObject *IoRenderMan_motionBegin(IoRenderMan* self, IoObject* locals, IoMessage
 				throw(std::runtime_error("Motion time must be a number"));
 			riTimes[i] = IoNumber_asDouble(time);
 		}
-		RiMotionBeginV(N, riTimes);
+		RiMotionBeginV(size, riTimes);
 	}
 	
 	return self;
@@ -419,9 +418,8 @@ void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m
 	}
 }
 
-void IoRenderMan_freeParameterList(IoRenderManParameterList* plist)
+void IoRenderMan_freeParameterList(IoRenderManParameterList& plist)
 {
 	// TODO: need to clear the values arrays and tokens when it's all working.
-	delete(plist);
 }
 

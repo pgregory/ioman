@@ -16,7 +16,8 @@ rm light := method(
 	lp atPut("intensity", 0.5)
 	lp atPut("from", RtPoint {-2,4,2})
 	call hasArgs ifTrue(call evalArgAt(0) foreach(k,v, lp atPut(k, v)))
-	self lightSource("distantlight", lp)
+	lh := self lightSource("distantlight", lp)
+	self illuminate(lh, true)
 )
 
 rm option("searchpath", "shader", "../../shaders:./:&")
@@ -30,7 +31,8 @@ rm shutter(0,1)
 
 rm projection("perspective", Map with("fov", 50))
 rm translate(0,-1,1)
-rm motionBegin(2, list(0, 1))
+
+rm motionBegin(list(0, 1))
 	rm rotate(-10, 1, 0, 0)
 	rm rotate(-40, 1, 0, 0)
 rm motionEnd

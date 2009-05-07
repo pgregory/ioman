@@ -15,6 +15,7 @@ IoMethodTable methodTable[] = {
 <xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin')]"/>
 	{NULL, NULL},
 };
+
 	</xsl:template>
 
 

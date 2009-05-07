@@ -7,62 +7,80 @@ IoObject *IoRenderMan_declare(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	RtString declaration;
 	declaration = IoMessage_locals_cStringArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiDeclare(name, declaration);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_frameBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt number;
 	number = IoMessage_locals_intArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiFrameBegin(number);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_frameEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiFrameEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_worldBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiWorldBegin();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_worldEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiWorldEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_ifBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString condition;
 	condition = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiIfBegin(condition);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_elseIf(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtString condition;
 	condition = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiElseIf(condition);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_else(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiElse();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_ifEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiIfEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_format(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -73,16 +91,20 @@ IoObject *IoRenderMan_format(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	yresolution = IoMessage_locals_intArgAt_(m, locals, 1);
 	RtFloat pixelaspectratio;
 	pixelaspectratio = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
 	RiFormat(xresolution, yresolution, pixelaspectratio);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_frameAspectRatio(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat frameratio;
 	frameratio = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiFrameAspectRatio(frameratio);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_screenWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -95,8 +117,10 @@ IoObject *IoRenderMan_screenWindow(IoRenderMan* self, IoObject* locals, IoMessag
 	bottom = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	RtFloat top;
 	top = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
 	RiScreenWindow(left, right, bottom, top);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_cropWindow(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -109,8 +133,10 @@ IoObject *IoRenderMan_cropWindow(IoRenderMan* self, IoObject* locals, IoMessage*
 	ymin = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	RtFloat ymax;
 	ymax = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
 	RiCropWindow(xmin, xmax, ymin, ymax);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_projection(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -119,8 +145,11 @@ IoObject *IoRenderMan_projection(IoRenderMan* self, IoObject* locals, IoMessage*
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiProjectionV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_clipping(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -129,8 +158,10 @@ IoObject *IoRenderMan_clipping(IoRenderMan* self, IoObject* locals, IoMessage* m
 	cnear = IoMessage_locals_doubleArgAt_(m, locals, 0);
 	RtFloat cfar;
 	cfar = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiClipping(cnear, cfar);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_clippingPlane(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -147,8 +178,10 @@ IoObject *IoRenderMan_clippingPlane(IoRenderMan* self, IoObject* locals, IoMessa
 	ny = IoMessage_locals_doubleArgAt_(m, locals, 4);
 	RtFloat nz;
 	nz = IoMessage_locals_doubleArgAt_(m, locals, 5);
+	RiContext(DATA(self)->riContext);
 	RiClippingPlane(x, y, z, nx, ny, nz);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_depthOfField(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -159,8 +192,10 @@ IoObject *IoRenderMan_depthOfField(IoRenderMan* self, IoObject* locals, IoMessag
 	focallength = IoMessage_locals_doubleArgAt_(m, locals, 1);
 	RtFloat focaldistance;
 	focaldistance = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
 	RiDepthOfField(fstop, focallength, focaldistance);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_shutter(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -169,16 +204,20 @@ IoObject *IoRenderMan_shutter(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	opentime = IoMessage_locals_doubleArgAt_(m, locals, 0);
 	RtFloat closetime;
 	closetime = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiShutter(opentime, closetime);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_pixelVariance(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat variance;
 	variance = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiPixelVariance(variance);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_pixelSamples(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -187,8 +226,10 @@ IoObject *IoRenderMan_pixelSamples(IoRenderMan* self, IoObject* locals, IoMessag
 	xsamples = IoMessage_locals_doubleArgAt_(m, locals, 0);
 	RtFloat ysamples;
 	ysamples = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiPixelSamples(xsamples, ysamples);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_pixelFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -199,8 +240,10 @@ IoObject *IoRenderMan_pixelFilter(IoRenderMan* self, IoObject* locals, IoMessage
 	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 1);
 	RtFloat ywidth;
 	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
 	RiPixelFilter(function, xwidth, ywidth);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_exposure(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -209,8 +252,10 @@ IoObject *IoRenderMan_exposure(IoRenderMan* self, IoObject* locals, IoMessage* m
 	gain = IoMessage_locals_doubleArgAt_(m, locals, 0);
 	RtFloat gamma;
 	gamma = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiExposure(gain, gamma);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_imager(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -219,8 +264,11 @@ IoObject *IoRenderMan_imager(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiImagerV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_quantize(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -235,8 +283,10 @@ IoObject *IoRenderMan_quantize(IoRenderMan* self, IoObject* locals, IoMessage* m
 	max = IoMessage_locals_intArgAt_(m, locals, 3);
 	RtFloat ditheramplitude;
 	ditheramplitude = IoMessage_locals_doubleArgAt_(m, locals, 4);
+	RiContext(DATA(self)->riContext);
 	RiQuantize(type, one, min, max, ditheramplitude);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_display(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -249,8 +299,11 @@ IoObject *IoRenderMan_display(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	mode = IoMessage_locals_cStringArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiDisplayV(name, type, mode, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_hider(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -259,8 +312,11 @@ IoObject *IoRenderMan_hider(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiHiderV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_colorSamples(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -289,16 +345,22 @@ IoObject *IoRenderMan_colorSamples(IoRenderMan* self, IoObject* locals, IoMessag
 		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
 		RGBn[__RGBn_index] = IoNumber_asFloat(entry);
 	}
+	RiContext(DATA(self)->riContext);
 	RiColorSamples(N, nRGB, RGBn);
+	delete[](nRGB);
+	delete[](RGBn);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_relativeDetail(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat relativedetail;
 	relativedetail = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiRelativeDetail(relativedetail);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_option(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -307,36 +369,47 @@ IoObject *IoRenderMan_option(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiOptionV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_attributeBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiAttributeBegin();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_attributeEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiAttributeEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_color(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtColor Cq;
 	IoRenderMan_getPointArgument(m, locals, 0, Cq);
+	RiContext(DATA(self)->riContext);
 	RiColor(Cq);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_opacity(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtColor Os;
 	IoRenderMan_getPointArgument(m, locals, 0, Os);
+	RiContext(DATA(self)->riContext);
 	RiOpacity(Os);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_textureCoordinates(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -357,8 +430,10 @@ IoObject *IoRenderMan_textureCoordinates(IoRenderMan* self, IoObject* locals, Io
 	s4 = IoMessage_locals_doubleArgAt_(m, locals, 6);
 	RtFloat t4;
 	t4 = IoMessage_locals_doubleArgAt_(m, locals, 7);
+	RiContext(DATA(self)->riContext);
 	RiTextureCoordinates(s1, t1, s2, t2, s3, t3, s4, t4);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_lightSource(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -367,8 +442,12 @@ IoObject *IoRenderMan_lightSource(IoRenderMan* self, IoObject* locals, IoMessage
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
-	RiLightSourceV(name, plist.count, plist.tokens, plist.values);
-	return self;
+	RiContext(DATA(self)->riContext);
+	RtLightHandle __retval = RiLightSourceV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
+	DATA(self)->lights.push_back(__retval);
+	return IONUMBER(DATA(self)->lights.size()-1);
+
 }
 	
 IoObject *IoRenderMan_areaLightSource(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -377,18 +456,26 @@ IoObject *IoRenderMan_areaLightSource(IoRenderMan* self, IoObject* locals, IoMes
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
-	RiAreaLightSourceV(name, plist.count, plist.tokens, plist.values);
-	return self;
+	RiContext(DATA(self)->riContext);
+	RtLightHandle __retval = RiAreaLightSourceV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
+	DATA(self)->lights.push_back(__retval);
+	return IONUMBER(DATA(self)->lights.size()-1);
+
 }
 	
 IoObject *IoRenderMan_illuminate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtLightHandle light;
-	// Unhandled type.
+	int __lightIndex = IoMessage_locals_intArgAt_(m, locals, 0);
+	IOASSERT(__lightIndex < DATA(self)->lights.size(), "Invalid light handle.");
+	light = DATA(self)->lights[__lightIndex];
 	RtBoolean onoff;
 	onoff = IoMessage_locals_boolArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiIlluminate(light, onoff);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_surface(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -397,8 +484,11 @@ IoObject *IoRenderMan_surface(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiSurfaceV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_displacement(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -407,8 +497,11 @@ IoObject *IoRenderMan_displacement(IoRenderMan* self, IoObject* locals, IoMessag
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiDisplacementV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_atmosphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -417,8 +510,11 @@ IoObject *IoRenderMan_atmosphere(IoRenderMan* self, IoObject* locals, IoMessage*
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiAtmosphereV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_interior(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -427,8 +523,11 @@ IoObject *IoRenderMan_interior(IoRenderMan* self, IoObject* locals, IoMessage* m
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiInteriorV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_exterior(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -437,8 +536,11 @@ IoObject *IoRenderMan_exterior(IoRenderMan* self, IoObject* locals, IoMessage* m
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiExteriorV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_shaderLayer(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -451,8 +553,11 @@ IoObject *IoRenderMan_shaderLayer(IoRenderMan* self, IoObject* locals, IoMessage
 	layername = IoMessage_locals_cStringArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiShaderLayerV(type, name, layername, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_connectShaderLayers(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -467,48 +572,60 @@ IoObject *IoRenderMan_connectShaderLayers(IoRenderMan* self, IoObject* locals, I
 	layer2 = IoMessage_locals_cStringArgAt_(m, locals, 3);
 	RtToken variable2;
 	variable2 = IoMessage_locals_cStringArgAt_(m, locals, 4);
+	RiContext(DATA(self)->riContext);
 	RiConnectShaderLayers(type, layer1, variable1, layer2, variable2);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_shadingRate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat size;
 	size = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiShadingRate(size);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_shadingInterpolation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiShadingInterpolation(type);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_matte(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBoolean onoff;
 	onoff = IoMessage_locals_boolArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiMatte(onoff);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_bound(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBound bound;
 	IoRenderMan_getBoundArgument(m, locals, 0, bound);
+	RiContext(DATA(self)->riContext);
 	RiBound(bound);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_detail(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtBound bound;
 	IoRenderMan_getBoundArgument(m, locals, 0, bound);
+	RiContext(DATA(self)->riContext);
 	RiDetail(bound);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_detailRange(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -521,8 +638,10 @@ IoObject *IoRenderMan_detailRange(IoRenderMan* self, IoObject* locals, IoMessage
 	onhigh = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	RtFloat offhigh;
 	offhigh = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
 	RiDetailRange(offlow, onlow, onhigh, offhigh);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_geometricApproximation(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -531,60 +650,76 @@ IoObject *IoRenderMan_geometricApproximation(IoRenderMan* self, IoObject* locals
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	RtFloat value;
 	value = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
 	RiGeometricApproximation(type, value);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_orientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken orientation;
 	orientation = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiOrientation(orientation);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_reverseOrientation(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiReverseOrientation();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_sides(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt nsides;
 	nsides = IoMessage_locals_intArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiSides(nsides);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_identity(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiIdentity();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_transform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtMatrix transform;
 	IoRenderMan_getMatrixArgument(m, locals, 0, transform);
+	RiContext(DATA(self)->riContext);
 	RiTransform(transform);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_concatTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtMatrix transform;
 	IoRenderMan_getMatrixArgument(m, locals, 0, transform);
+	RiContext(DATA(self)->riContext);
 	RiConcatTransform(transform);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_perspective(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFloat fov;
 	fov = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiPerspective(fov);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_translate(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -595,8 +730,10 @@ IoObject *IoRenderMan_translate(IoRenderMan* self, IoObject* locals, IoMessage* 
 	dy = IoMessage_locals_doubleArgAt_(m, locals, 1);
 	RtFloat dz;
 	dz = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
 	RiTranslate(dx, dy, dz);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_rotate(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -609,8 +746,10 @@ IoObject *IoRenderMan_rotate(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	dy = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	RtFloat dz;
 	dz = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
 	RiRotate(angle, dx, dy, dz);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_scale(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -621,8 +760,10 @@ IoObject *IoRenderMan_scale(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	sy = IoMessage_locals_doubleArgAt_(m, locals, 1);
 	RtFloat sz;
 	sz = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
 	RiScale(sx, sy, sz);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_skew(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -641,36 +782,46 @@ IoObject *IoRenderMan_skew(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	dy2 = IoMessage_locals_doubleArgAt_(m, locals, 5);
 	RtFloat dz2;
 	dz2 = IoMessage_locals_doubleArgAt_(m, locals, 6);
+	RiContext(DATA(self)->riContext);
 	RiSkew(angle, dx1, dy1, dz1, dx2, dy2, dz2);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_coordinateSystem(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken space;
 	space = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiCoordinateSystem(space);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_coordSysTransform(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken space;
 	space = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiCoordSysTransform(space);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_transformBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiTransformBegin();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_transformEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiTransformEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_resource(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -681,20 +832,27 @@ IoObject *IoRenderMan_resource(IoRenderMan* self, IoObject* locals, IoMessage* m
 	type = IoMessage_locals_cStringArgAt_(m, locals, 1);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 2, IoMessage_argCount(m) - 2, plist);
+	RiContext(DATA(self)->riContext);
 	RiResourceV(handle, type, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_resourceBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiResourceBegin();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_resourceEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiResourceEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_attribute(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -703,8 +861,11 @@ IoObject *IoRenderMan_attribute(IoRenderMan* self, IoObject* locals, IoMessage* 
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiAttributeV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_polygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -713,8 +874,11 @@ IoObject *IoRenderMan_polygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	nvertices = IoMessage_locals_intArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiPolygonV(nvertices, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_generalPolygon(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -734,8 +898,12 @@ IoObject *IoRenderMan_generalPolygon(IoRenderMan* self, IoObject* locals, IoMess
 	}
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 2, IoMessage_argCount(m) - 2, plist);
+	RiContext(DATA(self)->riContext);
 	RiGeneralPolygonV(nloops, nverts, plist.count, plist.tokens, plist.values);
+	delete[](nverts);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_pointsPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -766,8 +934,13 @@ IoObject *IoRenderMan_pointsPolygons(IoRenderMan* self, IoObject* locals, IoMess
 	}
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiPointsPolygonsV(npolys, nverts, verts, plist.count, plist.tokens, plist.values);
+	delete[](nverts);
+	delete[](verts);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_pointsGeneralPolygons(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -809,8 +982,14 @@ IoObject *IoRenderMan_pointsGeneralPolygons(IoRenderMan* self, IoObject* locals,
 	}
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
+	RiContext(DATA(self)->riContext);
 	RiPointsGeneralPolygonsV(npolys, nloops, nverts, verts, plist.count, plist.tokens, plist.values);
+	delete[](nloops);
+	delete[](nverts);
+	delete[](verts);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_basis(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -823,8 +1002,10 @@ IoObject *IoRenderMan_basis(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	IoRenderMan_getMatrixArgument(m, locals, 2, vbasis);
 	RtInt vstep;
 	vstep = IoMessage_locals_intArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
 	RiBasis(ubasis, ustep, vbasis, vstep);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_patch(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -833,8 +1014,11 @@ IoObject *IoRenderMan_patch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiPatchV(type, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_patchMesh(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -851,8 +1035,11 @@ IoObject *IoRenderMan_patchMesh(IoRenderMan* self, IoObject* locals, IoMessage* 
 	vwrap = IoMessage_locals_cStringArgAt_(m, locals, 4);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 5, IoMessage_argCount(m) - 5, plist);
+	RiContext(DATA(self)->riContext);
 	RiPatchMeshV(type, nu, uwrap, nv, vwrap, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_nuPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -897,8 +1084,13 @@ IoObject *IoRenderMan_nuPatch(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	vmax = IoMessage_locals_doubleArgAt_(m, locals, 9);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 10, IoMessage_argCount(m) - 10, plist);
+	RiContext(DATA(self)->riContext);
 	RiNuPatchV(nu, uorder, uknot, umin, umax, nv, vorder, vknot, vmin, vmax, plist.count, plist.tokens, plist.values);
+	delete[](uknot);
+	delete[](vknot);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_trimCurve(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1004,8 +1196,19 @@ IoObject *IoRenderMan_trimCurve(IoRenderMan* self, IoObject* locals, IoMessage* 
 		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
 		w[__w_index] = IoNumber_asFloat(entry);
 	}
+	RiContext(DATA(self)->riContext);
 	RiTrimCurve(nloops, ncurves, order, knot, min, max, n, u, v, w);
+	delete[](ncurves);
+	delete[](order);
+	delete[](knot);
+	delete[](min);
+	delete[](max);
+	delete[](n);
+	delete[](u);
+	delete[](v);
+	delete[](w);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_subdivisionMesh(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1046,7 +1249,9 @@ IoObject *IoRenderMan_subdivisionMesh(IoRenderMan* self, IoObject* locals, IoMes
 	for(__tags_index = 0; __tags_index<__tags_length; __tags_index++)
 	{
 		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__tags_list, __tags_index));
-	// RtTokenArray not yet supported.
+		IOASSERT(ISSEQ(entry), "Expected a list of sequences for RtTokenArray");
+		char* ioToken = IoSeq_asCString(entry);
+		tags[__tags_index] = ioToken;
 	}
 	RtInt* nargs;
 	int __nargs_index;
@@ -1083,8 +1288,18 @@ IoObject *IoRenderMan_subdivisionMesh(IoRenderMan* self, IoObject* locals, IoMes
 	}
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 9, IoMessage_argCount(m) - 9, plist);
+	RiContext(DATA(self)->riContext);
 	RiSubdivisionMeshV(scheme, nfaces, nvertices, vertices, ntags, tags, nargs, intargs, floatargs, plist.count, plist.tokens, plist.values);
+	delete[](nvertices);
+	delete[](vertices);
+	// RtTokenArray not yet supported.
+	delete[](tags);
+	delete[](nargs);
+	delete[](intargs);
+	delete[](floatargs);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_sphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1099,8 +1314,11 @@ IoObject *IoRenderMan_sphere(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 3);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
+	RiContext(DATA(self)->riContext);
 	RiSphereV(radius, zmin, zmax, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_cone(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1113,8 +1331,11 @@ IoObject *IoRenderMan_cone(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiConeV(height, radius, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_cylinder(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1129,8 +1350,11 @@ IoObject *IoRenderMan_cylinder(IoRenderMan* self, IoObject* locals, IoMessage* m
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 3);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
+	RiContext(DATA(self)->riContext);
 	RiCylinderV(radius, zmin, zmax, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_hyperboloid(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1143,8 +1367,11 @@ IoObject *IoRenderMan_hyperboloid(IoRenderMan* self, IoObject* locals, IoMessage
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiHyperboloidV(point1, point2, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_paraboloid(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1159,8 +1386,11 @@ IoObject *IoRenderMan_paraboloid(IoRenderMan* self, IoObject* locals, IoMessage*
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 3);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
+	RiContext(DATA(self)->riContext);
 	RiParaboloidV(rmax, zmin, zmax, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_disk(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1173,8 +1403,11 @@ IoObject *IoRenderMan_disk(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiDiskV(height, radius, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_torus(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1191,8 +1424,11 @@ IoObject *IoRenderMan_torus(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	thetamax = IoMessage_locals_doubleArgAt_(m, locals, 4);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 5, IoMessage_argCount(m) - 5, plist);
+	RiContext(DATA(self)->riContext);
 	RiTorusV(majorrad, minorrad, phimin, phimax, thetamax, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_points(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1201,8 +1437,11 @@ IoObject *IoRenderMan_points(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	npoints = IoMessage_locals_intArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiPointsV(npoints, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_curves(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1226,8 +1465,12 @@ IoObject *IoRenderMan_curves(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	wrap = IoMessage_locals_cStringArgAt_(m, locals, 3);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 4, IoMessage_argCount(m) - 4, plist);
+	RiContext(DATA(self)->riContext);
 	RiCurvesV(type, ncurves, nvertices, wrap, plist.count, plist.tokens, plist.values);
+	delete[](nvertices);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1270,12 +1513,21 @@ IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	for(__str_index = 0; __str_index<__str_length; __str_index++)
 	{
 		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__str_list, __str_index));
-	// RtTokenArray not yet supported.
+		IOASSERT(ISSEQ(entry), "Expected a list of sequences for RtTokenArray");
+		char* ioToken = IoSeq_asCString(entry);
+		str[__str_index] = ioToken;
 	}
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 7, IoMessage_argCount(m) - 7, plist);
+	RiContext(DATA(self)->riContext);
 	RiBlobbyV(nleaf, ncode, code, nflt, flt, nstr, str, plist.count, plist.tokens, plist.values);
+	delete[](code);
+	delete[](flt);
+	// RtTokenArray not yet supported.
+	delete[](str);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_procedural(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1288,8 +1540,10 @@ IoObject *IoRenderMan_procedural(IoRenderMan* self, IoObject* locals, IoMessage*
 	// Unhandled type.
 	RtProcFreeFunc freeproc;
 	// Unhandled type.
+	RiContext(DATA(self)->riContext);
 	RiProcedural(data, bound, refineproc, freeproc);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1298,48 +1552,66 @@ IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
 	RiGeometryV(type, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_solidBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
 	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
 	RiSolidBegin(type);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_solidEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiSolidEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_objectBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
-	RiObjectBegin();
-	return self;
+	RiContext(DATA(self)->riContext);
+	RtObjectHandle __retval = RiObjectBegin();
+	DATA(self)->objects.push_back(__retval);
+	return IONUMBER(DATA(self)->objects.size()-1);
+
 }
 	
 IoObject *IoRenderMan_objectEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiObjectEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_objectInstance(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtObjectHandle handle;
-	// Unhandled type.
+	int __objectIndex = IoMessage_locals_intArgAt_(m, locals, 0);
+	IOASSERT(__objectIndex < DATA(self)->objects.size(), "Invalid object handle.");
+	handle = DATA(self)->lights[__objectIndex];
+	RiContext(DATA(self)->riContext);
 	RiObjectInstance(handle);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_motionEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+	RiContext(DATA(self)->riContext);
 	RiMotionEnd();
 	return self;
+
 }
 	
 IoObject *IoRenderMan_makeTexture(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1360,8 +1632,11 @@ IoObject *IoRenderMan_makeTexture(IoRenderMan* self, IoObject* locals, IoMessage
 	twidth = IoMessage_locals_doubleArgAt_(m, locals, 6);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 7, IoMessage_argCount(m) - 7, plist);
+	RiContext(DATA(self)->riContext);
 	RiMakeTextureV(imagefile, texturefile, swrap, twrap, filterfunc, swidth, twidth, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_makeLatLongEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1378,8 +1653,11 @@ IoObject *IoRenderMan_makeLatLongEnvironment(IoRenderMan* self, IoObject* locals
 	twidth = IoMessage_locals_doubleArgAt_(m, locals, 4);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 5, IoMessage_argCount(m) - 5, plist);
+	RiContext(DATA(self)->riContext);
 	RiMakeLatLongEnvironmentV(imagefile, reflfile, filterfunc, swidth, twidth, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_makeCubeFaceEnvironment(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1408,8 +1686,11 @@ IoObject *IoRenderMan_makeCubeFaceEnvironment(IoRenderMan* self, IoObject* local
 	twidth = IoMessage_locals_doubleArgAt_(m, locals, 10);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 11, IoMessage_argCount(m) - 11, plist);
+	RiContext(DATA(self)->riContext);
 	RiMakeCubeFaceEnvironmentV(px, nx, py, ny, pz, nz, reflfile, fov, filterfunc, swidth, twidth, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_makeShadow(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1420,8 +1701,11 @@ IoObject *IoRenderMan_makeShadow(IoRenderMan* self, IoObject* locals, IoMessage*
 	shadowfile = IoMessage_locals_cStringArgAt_(m, locals, 1);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 2, IoMessage_argCount(m) - 2, plist);
+	RiContext(DATA(self)->riContext);
 	RiMakeShadowV(picfile, shadowfile, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_makeOcclusion(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1436,22 +1720,31 @@ IoObject *IoRenderMan_makeOcclusion(IoRenderMan* self, IoObject* locals, IoMessa
 	for(__picfiles_index = 0; __picfiles_index<__picfiles_length; __picfiles_index++)
 	{
 		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__picfiles_list, __picfiles_index));
-	// RtStringArray not yet supported.
+		IOASSERT(ISSEQ(entry), "Expected a list of sequences for RtStringArray");
+		char* ioToken = IoSeq_asCString(entry);
+		picfiles[__picfiles_index] = ioToken;
 	}
 	RtString shadowfile;
 	shadowfile = IoMessage_locals_cStringArgAt_(m, locals, 2);
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 3, IoMessage_argCount(m) - 3, plist);
+	RiContext(DATA(self)->riContext);
 	RiMakeOcclusionV(npics, picfiles, shadowfile, plist.count, plist.tokens, plist.values);
+	// RtStringArray not yet supported.
+	delete[](picfiles);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_errorHandler(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtErrorFunc handler;
-	// Unhandled type.
+	handler = RiErrorPrint;
+	RiContext(DATA(self)->riContext);
 	RiErrorHandler(handler);
 	return self;
+
 }
 	
 IoObject *IoRenderMan_readArchive(IoRenderMan* self, IoObject* locals, IoMessage* m)
@@ -1462,8 +1755,11 @@ IoObject *IoRenderMan_readArchive(IoRenderMan* self, IoObject* locals, IoMessage
 	// Unhandled type.
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 2, IoMessage_argCount(m) - 2, plist);
+	RiContext(DATA(self)->riContext);
 	RiReadArchiveV(name, callback, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
 	return self;
+
 }
 	
 

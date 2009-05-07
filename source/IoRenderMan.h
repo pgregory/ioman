@@ -7,6 +7,7 @@ extern "C" {
 }
 
 #include <tokendictionary.h>
+#include <vector>
 
 // define a macro that can check whether an IoObject is of our type by checking whether it holds a pointer to our clone function
 #define ISRenderMan(self) IoObject_hasCloneFunc_(self, (IoTagCloneFunc *)IoRenderMan_rawClone)
@@ -34,6 +35,8 @@ typedef struct
 {
 	RtContextHandle riContext;
 	Aqsis::CqTokenDictionary tokenDict;
+	std::vector<RtLightHandle>	lights;
+	std::vector<RtObjectHandle>	objects;
 } IoRenderManData;
 
 typedef struct

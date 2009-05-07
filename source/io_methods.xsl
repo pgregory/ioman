@@ -19,11 +19,34 @@
 	<xsl:template match="Procedure">
 IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
+<!-- Convert the arguments from Io messages -->
 <xsl:apply-templates select="Arguments" mode="convert_from_message"/>
 <!-- Call the C API function -->
-<xsl:value-of select="concat('&#x9;', Name)"/>
+<xsl:value-of select="string('&#x9;RiContext(DATA(self)->riContext);&#xa;')"/>
+<xsl:choose>
+	<xsl:when test="ReturnType = 'RtLightHandle' or ReturnType = 'RtObjectHandle'">
+		<xsl:value-of select="concat('&#x9;', ReturnType, ' __retval = ', Name)"/>
+	</xsl:when>
+	<xsl:otherwise>
+		<xsl:value-of select="concat('&#x9;', Name)"/>
+	</xsl:otherwise>
+</xsl:choose>
 <xsl:if test="Arguments/ParamList">V</xsl:if>(<xsl:apply-templates select="Arguments" mode="pass_to_c_api"/><xsl:if test="Arguments/ParamList"><xsl:if test="count(Arguments/Argument)>0">, </xsl:if>plist.count, plist.tokens, plist.values</xsl:if>);
-	return self;
+<!-- Clean up the argument data -->
+<xsl:apply-templates select="Arguments" mode="cleanup"/>
+<xsl:choose>
+	<xsl:when test="ReturnType = 'RtLightHandle'">
+		<xsl:value-of select="string('&#x9;DATA(self)->lights.push_back(__retval);&#xa;')"/>
+		<xsl:value-of select="string('&#x9;return IONUMBER(DATA(self)->lights.size()-1);&#xa;')"/>
+	</xsl:when>
+	<xsl:when test="ReturnType = 'RtObjectHandle'">
+		<xsl:value-of select="string('&#x9;DATA(self)->objects.push_back(__retval);&#xa;')"/>
+		<xsl:value-of select="string('&#x9;return IONUMBER(DATA(self)->objects.size()-1);&#xa;')"/>
+	</xsl:when>
+	<xsl:otherwise>
+		<xsl:value-of select="string('&#x9;return self;&#xa;')"/>
+	</xsl:otherwise>
+</xsl:choose>
 }
 	</xsl:template>
 
@@ -49,7 +72,9 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 				<xsl:value-of select="concat('&#x9;&#x9;IoObject* entry = reinterpret_cast&lt;IoObject*&gt;(List_at_(__', Name, '_list, __', Name, '_index));&#xa;')"/>
 				<xsl:choose>
 					<xsl:when test="Type = 'RtTokenArray' or Type = 'RtStringArray'">
-						<xsl:value-of select="concat('&#x9;// ', Type, ' not yet supported.&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;&#x9;IOASSERT(ISSEQ(entry), &quot;Expected a list of sequences for ', Type, '&quot;);&#xa;')"/>
+						<xsl:value-of select="string('&#x9;&#x9;char* ioToken = IoSeq_asCString(entry);&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;&#x9;', Name, '[__', Name, '_index] = ioToken;&#xa;')"/>
 					</xsl:when>
 					<xsl:when test="Type = 'RtColorArray' or Type = 'RtPointArray'">
 						<xsl:value-of select="concat('&#x9;&#x9;IOASSERT(ISVECTOR(entry), &quot;Expected a list of vectors for ', Type, '&quot;);&#xa;')"/>
@@ -98,6 +123,19 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 					<xsl:when test="Type = 'RtBound'">
 						<xsl:value-of select="concat('&#x9;IoRenderMan_getBoundArgument(m, locals, ', position()-1, ', ', Name, ');&#xa;')"/>
 					</xsl:when>
+					<xsl:when test="Type = 'RtLightHandle'">
+						<xsl:value-of select="concat('&#x9;int __lightIndex = IoMessage_locals_intArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
+						<xsl:value-of select="string('&#x9;IOASSERT(__lightIndex &lt; DATA(self)-&gt;lights.size(), &quot;Invalid light handle.&quot;);&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;', Name, ' = DATA(self)-&gt;lights[__lightIndex];&#xa;')"/>
+					</xsl:when>
+					<xsl:when test="Type = 'RtObjectHandle'">
+						<xsl:value-of select="concat('&#x9;int __objectIndex = IoMessage_locals_intArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
+						<xsl:value-of select="string('&#x9;IOASSERT(__objectIndex &lt; DATA(self)-&gt;objects.size(), &quot;Invalid object handle.&quot;);&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;', Name, ' = DATA(self)-&gt;lights[__objectIndex];&#xa;')"/>
+					</xsl:when>
+					<xsl:when test="Type = 'RtErrorFunc'">
+						<xsl:value-of select="concat('&#x9;', Name, ' = RiErrorPrint;&#xa;')"/>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="string('&#x9;// Unhandled type.&#xa;')"/>
 					</xsl:otherwise>
@@ -114,5 +152,26 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 	<xsl:template match="Argument" mode="pass_to_c_api">
 		<xsl:value-of select="Name"/>
 		<xsl:if test="not(position()=last())">, </xsl:if>
+	</xsl:template>
+
+	<xsl:template match="Arguments" mode="cleanup">
+		<xsl:apply-templates select="Argument" mode="cleanup"/>
+		<!-- Read and prepare parameter list -->
+		<xsl:if test="ParamList">
+			<xsl:value-of select="string('&#x9;IoRenderMan_freeParameterList(plist);&#xa;')"/>
+		</xsl:if>
+	</xsl:template>
+
+	<xsl:template match="Argument" mode="cleanup">
+		<xsl:choose>
+			<xsl:when test="contains( Type, 'Array')">
+				<xsl:choose>
+					<xsl:when test="Type = 'RtTokenArray' or Type = 'RtStringArray'">
+						<xsl:value-of select="concat('&#x9;// ', Type, ' not yet supported.&#xa;')"/>
+					</xsl:when>
+				</xsl:choose>
+				<xsl:value-of select="concat('&#x9;delete[](', Name, ');&#xa;')"/>
+			</xsl:when>
+		</xsl:choose>
 	</xsl:template>
 </xsl:stylesheet>

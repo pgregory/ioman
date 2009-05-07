@@ -17,3 +17,5 @@ RtBasis := RtMatrix clone
 RtBound := Vector clone setSize(6)
 RtString := Sequence clone
 RtToken := Sequence clone
+RtLightHandle := Number clone
+RtObjectHandle := Number clone
