@@ -26,6 +26,7 @@ void IoRenderMan_getPointArgument(IoMessage* m, IoObject* locals, int index, RtP
 void IoRenderMan_getMatrixArgument(IoMessage* m, IoObject* locals, int index, RtMatrix& value);
 void IoRenderMan_getBoundArgument(IoMessage* m, IoObject* locals, int index, RtBound& value);
 void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m, int startArg, int numExtraArgs, IoRenderManParameterList& plist);
+RtFilterFunc IoRenderMan_getFilterFromName(const char* filterName);
 void IoRenderMan_freeParameterList(IoRenderManParameterList& plist);
 #include "IoRenderManMethods.inl"
 
@@ -421,5 +422,24 @@ void IoRenderMan_getParameterList(IoObject* self, IoObject* locals, IoMessage* m
 void IoRenderMan_freeParameterList(IoRenderManParameterList& plist)
 {
 	// TODO: need to clear the values arrays and tokens when it's all working.
+}
+
+RtFilterFunc IoRenderMan_getFilterFromName(const char* filterName)
+{
+	if     (strcmp(filterName, "box") == 0)         return &::RiBoxFilter;
+	else if(strcmp(filterName, "gaussian") == 0)    return &::RiGaussianFilter;
+	else if(strcmp(filterName, "triangle") == 0)    return &::RiTriangleFilter;
+	else if(strcmp(filterName, "mitchell") == 0)    return &::RiMitchellFilter;
+	else if(strcmp(filterName, "catmull-rom") == 0) return &::RiCatmullRomFilter;
+	else if(strcmp(filterName, "sinc") == 0)        return &::RiSincFilter;
+	else if(strcmp(filterName, "bessel") == 0)      return &::RiBesselFilter;
+	else if(strcmp(filterName, "disk") == 0)        return &::RiDiskFilter;
+	else
+	{
+		std::stringstream strErr;
+		strErr << "unknown filter function \"" << filterName << "\"" << std::ends;
+		throw(std::runtime_error(strErr.str().c_str()));
+		return 0;
+	}
 }
 

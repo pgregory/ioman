@@ -136,6 +136,10 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 					<xsl:when test="Type = 'RtErrorFunc'">
 						<xsl:value-of select="concat('&#x9;', Name, ' = RiErrorPrint;&#xa;')"/>
 					</xsl:when>
+					<xsl:when test="Type = 'RtFilterFunc'">
+						<xsl:value-of select="concat('&#x9;const char* __', Name, '_name = IoMessage_locals_cStringArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;', Name, ' = IoRenderMan_getFilterFromName(__', Name, '_name);&#xa;')"/>
+					</xsl:when>
 					<xsl:otherwise>
 						<xsl:value-of select="string('&#x9;// Unhandled type.&#xa;')"/>
 					</xsl:otherwise>

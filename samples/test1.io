@@ -26,6 +26,7 @@ rm display("poly_test.tif", "framebuffer", "rgba", Map with("string compression"
 
 rm format(200,150,1)
 rm shadingRate(2)
+rm pixelFilter("gaussian", 2, 2)
 
 rm shutter(0,1)
 

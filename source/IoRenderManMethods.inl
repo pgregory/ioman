@@ -235,7 +235,8 @@ IoObject *IoRenderMan_pixelSamples(IoRenderMan* self, IoObject* locals, IoMessag
 IoObject *IoRenderMan_pixelFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtFilterFunc function;
-	// Unhandled type.
+	const char* __function_name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	function = IoRenderMan_getFilterFromName(__function_name);
 	RtFloat xwidth;
 	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 1);
 	RtFloat ywidth;
@@ -1625,7 +1626,8 @@ IoObject *IoRenderMan_makeTexture(IoRenderMan* self, IoObject* locals, IoMessage
 	RtToken twrap;
 	twrap = IoMessage_locals_cStringArgAt_(m, locals, 3);
 	RtFilterFunc filterfunc;
-	// Unhandled type.
+	const char* __filterfunc_name = IoMessage_locals_cStringArgAt_(m, locals, 4);
+	filterfunc = IoRenderMan_getFilterFromName(__filterfunc_name);
 	RtFloat swidth;
 	swidth = IoMessage_locals_doubleArgAt_(m, locals, 5);
 	RtFloat twidth;
@@ -1646,7 +1648,8 @@ IoObject *IoRenderMan_makeLatLongEnvironment(IoRenderMan* self, IoObject* locals
 	RtString reflfile;
 	reflfile = IoMessage_locals_cStringArgAt_(m, locals, 1);
 	RtFilterFunc filterfunc;
-	// Unhandled type.
+	const char* __filterfunc_name = IoMessage_locals_cStringArgAt_(m, locals, 2);
+	filterfunc = IoRenderMan_getFilterFromName(__filterfunc_name);
 	RtFloat swidth;
 	swidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
 	RtFloat twidth;
@@ -1679,7 +1682,8 @@ IoObject *IoRenderMan_makeCubeFaceEnvironment(IoRenderMan* self, IoObject* local
 	RtFloat fov;
 	fov = IoMessage_locals_doubleArgAt_(m, locals, 7);
 	RtFilterFunc filterfunc;
-	// Unhandled type.
+	const char* __filterfunc_name = IoMessage_locals_cStringArgAt_(m, locals, 8);
+	filterfunc = IoRenderMan_getFilterFromName(__filterfunc_name);
 	RtFloat swidth;
 	swidth = IoMessage_locals_doubleArgAt_(m, locals, 9);
 	RtFloat twidth;
