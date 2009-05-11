@@ -1531,22 +1531,6 @@ IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
 
 }
 	
-IoObject *IoRenderMan_procedural(IoRenderMan* self, IoObject* locals, IoMessage* m)
-{
-	RtPointer data;
-	// Unhandled type.
-	RtBound bound;
-	IoRenderMan_getBoundArgument(m, locals, 1, bound);
-	RtProcSubdivFunc refineproc;
-	// Unhandled type.
-	RtProcFreeFunc freeproc;
-	// Unhandled type.
-	RiContext(DATA(self)->riContext);
-	RiProcedural(data, bound, refineproc, freeproc);
-	return self;
-
-}
-	
 IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;

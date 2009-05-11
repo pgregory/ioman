@@ -60,6 +60,69 @@ IoObject *IoRenderMan_motionBegin(IoRenderMan* self, IoObject* locals, IoMessage
 	return self;
 }
 
+IoObject *IoRenderMan_procedural(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtString procName;
+	procName = IoMessage_locals_cStringArgAt_(m, locals, 0);
+
+	RtProcSubdivFunc subdivideFunc = 0;
+	if(strcmp(procName, "DelayedReadArchive") == 0) subdivideFunc = &::RiProcDelayedReadArchive;
+    else if(strcmp(procName, "RunProgram") == 0)    subdivideFunc = &::RiProcRunProgram;
+    else if(strcmp(procName, "DynamicLoad") == 0)   subdivideFunc = &::RiProcDynamicLoad;
+	else
+	{
+		std::stringstream strErr;
+		strErr << "unknown procedural function \"" << procName << "\"" << std::ends;
+		throw(std::runtime_error(strErr.str().c_str()));
+	}
+
+	int __arguments_index;
+	List* __arguments_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 1));
+	int __arguments_length = List_size(__arguments_list);
+	
+	// Convert the string array to something passable as data arguments to the
+	// builtin procedurals.
+	//
+	// We jump through a few hoops to meet the spec here.  The data argument to
+	// the builtin procedurals should be interpretable as an array of RtString,
+	// which we somehow also want to be free()'able.  If we choose to use
+	// RiProcFree(), we must allocate it in one big lump.  Ugh.
+	size_t dataSize = 0;
+	for(__arguments_index = 0; __arguments_index<__arguments_length; __arguments_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__arguments_list, __arguments_index));
+		IOASSERT(ISSEQ(entry), "Expected a list of sequences for procedural arguments");
+		dataSize += sizeof(RtString);   // one pointer for this entry
+		dataSize += IoSeq_rawSize(entry) + 1; // and space for the string
+	}
+	RtPointer pdata = reinterpret_cast<RtPointer>(malloc(dataSize));
+	RtString stringstart = reinterpret_cast<RtString>(
+			reinterpret_cast<RtString*>(pdata) + __arguments_length);
+	for(__arguments_index = 0; __arguments_index<__arguments_length; __arguments_index++)
+	{
+		reinterpret_cast<RtString*>(pdata)[__arguments_index] = stringstart;
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__arguments_list, __arguments_index));
+		char* ioToken = IoSeq_asCString(entry);
+		std::strcpy(stringstart, ioToken);
+		stringstart += IoSeq_rawSize(entry) + 1;
+	}
+	RtFloat* bound;
+	int __bound_index;
+	List* __bound_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 2));
+	int __bound_length = List_size(__bound_list);
+	bound = new RtFloat[__bound_length];
+	for(__bound_index = 0; __bound_index<__bound_length; __bound_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__bound_list, __bound_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
+		bound[__bound_index] = IoNumber_asFloat(entry);
+	}
+	RiContext(DATA(self)->riContext);
+	RiProcedural(pdata, bound, subdivideFunc, &::RiProcFree);
+	delete[](bound);
+	return self;
+}
+
 // _tag makes an IoTag for the bookkeeping of names and methods for this proto
 IoTag *IoRenderMan_newTag(void *state)
 {
@@ -102,6 +165,7 @@ IoObject *IoRenderMan_proto(void *state)
 		IoMethodTable methodTable[] = {
 			{"with", IoRenderMan_with},
 			{"motionBegin", IoRenderMan_motionBegin},
+			{"procedural", IoRenderMan_procedural},
 	
 			{NULL, NULL}
 		};

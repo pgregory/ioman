@@ -11,7 +11,7 @@
 	<xsl:template match="RiAPI">
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 		<!--	Procedures	-->
-		<xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin')]"/>
+		<xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin') and not(Name = 'RiProcedural')]"/>
 		<xsl:text>&#xa;&#xa;</xsl:text>
 	</xsl:template>
 

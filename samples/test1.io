@@ -28,6 +28,8 @@ rm format(200,150,1)
 rm shadingRate(2)
 rm pixelFilter("gaussian", 2, 2)
 
+rm procedural("RunProgram", list("hello", "world"), list(1,2,3,4,5,6))
+
 rm shutter(0,1)
 
 rm projection("perspective", Map with("fov", 50))
