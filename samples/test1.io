@@ -20,41 +20,42 @@ rm light := method(
 	self illuminate(lh, true)
 )
 
-rm option("searchpath", "shader", "../../shaders:./:&")
+rm do (
+	option("searchpath", "shader", "../../shaders:./:&")
 
-rm display("poly_test.tif", "framebuffer", "rgba", Map with("string compression", "lzw"))
+	display("poly_test.tif", "framebuffer", "rgba", Map with("string compression", "lzw"))
 
-rm format(200,150,1)
-rm shadingRate(2)
-rm pixelFilter("gaussian", 2, 2)
+	format(200,150,1)
+	shadingRate(2)
+	pixelFilter("gaussian", 2, 2)
 
-rm procedural("RunProgram", list("hello", "world"), list(1,2,3,4,5,6))
 
-rm shutter(0,1)
+	shutter(0,1)
 
-rm projection("perspective", Map with("fov", 50))
-rm translate(0,-1,1)
+	projection("perspective", Map with("fov", 50))
+	translate(0,-1,1)
 
-rm motionBegin(list(0, 1))
-	rm rotate(-10, 1, 0, 0)
-	rm rotate(-40, 1, 0, 0)
-rm motionEnd
+	motionBegin(list(0, 1))
+		rotate(-10, 1, 0, 0)
+		rotate(-40, 1, 0, 0)
+	motionEnd
 
-rm option("limits", "eyesplits", 3)
-rm sides(2)
+	option("limits", "eyesplits", 3)
+	sides(2)
 
-rm frameBegin(1)
-	rm worldBegin
+	frame(1,
+		world(
+			lightSource("ambientlight", "intensity", 0.1)
+			light
+			light(Map with("intensity", 0.7, "from", RtPoint {1,2,-2}))
 
-		rm lightSource("ambientlight", "intensity", 0.1)
-		rm light
-		rm light(Map with("intensity", 0.7, "from", RtPoint {1,2,-2}))
+			surface("plastic")
 
-		rm surface("plastic")
-
-		rm attributeBegin
-			rm color(RtColor {1, 0, 0})
-			rm pointsPolygons(2, list(3,3), list(0,1,2, 0,2,3), Map with("P", list(p1, p2, p3, p4), "N", list(n1,n2,n3,n4)))
-		rm attributeEnd
-	rm worldEnd
-rm frameEnd
+			attribute(
+				color(RtColor {1, 0, 0})
+				pointsPolygons(2, list(3,3), list(0,1,2, 0,2,3), Map with("P", list(p1, p2, p3, p4), "N", list(n1,n2,n3,n4)))
+			)
+			procedural("RunProgram", list("hello", "world"), list(1,2,3,4,5,6))
+		)
+	)
+)
