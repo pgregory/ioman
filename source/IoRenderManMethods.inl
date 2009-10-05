@@ -13,6 +13,42 @@ IoObject *IoRenderMan_declare(IoRenderMan* self, IoObject* locals, IoMessage* m)
 
 }
 	
+IoObject *IoRenderMan_begin(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken name;
+	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RiContext(DATA(self)->riContext);
+	RiBegin(name);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_end(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RiContext(DATA(self)->riContext);
+	RiEnd();
+	return self;
+
+}
+	
+IoObject *IoRenderMan_getContext(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RiContext(DATA(self)->riContext);
+	RiGetContext();
+	return self;
+
+}
+	
+IoObject *IoRenderMan_context(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtContextHandle handle;
+	// Unhandled type "RtContextHandle".
+	RiContext(DATA(self)->riContext);
+	RiContext(handle);
+	return self;
+
+}
+	
 IoObject *IoRenderMan_frameBegin(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtInt number;
@@ -307,6 +343,134 @@ IoObject *IoRenderMan_display(IoRenderMan* self, IoObject* locals, IoMessage* m)
 
 }
 	
+IoObject *IoRenderMan_gaussianFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiGaussianFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_boxFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiBoxFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_mitchellFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiMitchellFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_triangleFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiTriangleFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_catmullRomFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiCatmullRomFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_sincFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiSincFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_diskFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiDiskFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_besselFilter(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtFloat x;
+	x = IoMessage_locals_doubleArgAt_(m, locals, 0);
+	RtFloat y;
+	y = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RtFloat xwidth;
+	xwidth = IoMessage_locals_doubleArgAt_(m, locals, 2);
+	RtFloat ywidth;
+	ywidth = IoMessage_locals_doubleArgAt_(m, locals, 3);
+	RiContext(DATA(self)->riContext);
+	RiBesselFilter(x, y, xwidth, ywidth);
+	return self;
+
+}
+	
 IoObject *IoRenderMan_hider(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
@@ -487,6 +651,19 @@ IoObject *IoRenderMan_surface(IoRenderMan* self, IoObject* locals, IoMessage* m)
 	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
 	RiContext(DATA(self)->riContext);
 	RiSurfaceV(name, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_deformation(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken name;
+	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 1, IoMessage_argCount(m) - 1, plist);
+	RiContext(DATA(self)->riContext);
+	RiDeformationV(name, plist.count, plist.tokens, plist.values);
 	IoRenderMan_freeParameterList(plist);
 	return self;
 
@@ -805,6 +982,35 @@ IoObject *IoRenderMan_coordSysTransform(IoRenderMan* self, IoObject* locals, IoM
 	space = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	RiContext(DATA(self)->riContext);
 	RiCoordSysTransform(space);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_transformPoints(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken fromspace;
+	fromspace = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RtToken tospace;
+	tospace = IoMessage_locals_cStringArgAt_(m, locals, 1);
+	RtInt npoints;
+	npoints = IoMessage_locals_intArgAt_(m, locals, 2);
+	RtPoint* points;
+	int __points_index;
+	List* __points_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 3));
+	int __points_length = List_size(__points_list);
+	points = new RtPoint[__points_length];
+	for(__points_index = 0; __points_index<__points_length; __points_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__points_list, __points_index));
+		IOASSERT(ISVECTOR(entry), "Expected a list of vectors for RtPointArray");
+		UArray* vector = IoSeq_rawUArray(entry);
+		points[__points_index][0] = UArray_doubleAt_(vector, 0);
+		points[__points_index][1] = UArray_doubleAt_(vector, 1);
+		points[__points_index][2] = UArray_doubleAt_(vector, 2);
+	}
+	RiContext(DATA(self)->riContext);
+	RiTransformPoints(fromspace, tospace, npoints, points);
+	delete[](points);
 	return self;
 
 }
@@ -1531,6 +1737,52 @@ IoObject *IoRenderMan_blobby(IoRenderMan* self, IoObject* locals, IoMessage* m)
 
 }
 	
+IoObject *IoRenderMan_procFree(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPointer data;
+	// Unhandled type "RtPointer".
+	RiContext(DATA(self)->riContext);
+	RiProcFree(data);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_procDelayedReadArchive(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPointer data;
+	// Unhandled type "RtPointer".
+	RtFloat detail;
+	detail = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
+	RiProcDelayedReadArchive(data, detail);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_procRunProgram(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPointer data;
+	// Unhandled type "RtPointer".
+	RtFloat detail;
+	detail = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
+	RiProcRunProgram(data, detail);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_procDynamicLoad(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtPointer data;
+	// Unhandled type "RtPointer".
+	RtFloat detail;
+	detail = IoMessage_locals_doubleArgAt_(m, locals, 1);
+	RiContext(DATA(self)->riContext);
+	RiProcDynamicLoad(data, detail);
+	return self;
+
+}
+	
 IoObject *IoRenderMan_geometry(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken type;
@@ -1591,6 +1843,28 @@ IoObject *IoRenderMan_objectInstance(IoRenderMan* self, IoObject* locals, IoMess
 
 }
 	
+IoObject *IoRenderMan_motionBeginV(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt N;
+	N = IoMessage_locals_intArgAt_(m, locals, 0);
+	RtFloat* times;
+	int __times_index;
+	List* __times_list = IoList_rawList(IoMessage_locals_valueArgAt_(m, locals, 1));
+	int __times_length = List_size(__times_list);
+	times = new RtFloat[__times_length];
+	for(__times_index = 0; __times_index<__times_length; __times_index++)
+	{
+		IoObject* entry = reinterpret_cast<IoObject*>(List_at_(__times_list, __times_index));
+		IOASSERT(ISNUMBER(entry), "Expected a list of numbers for RtFloatArray");
+		times[__times_index] = IoNumber_asFloat(entry);
+	}
+	RiContext(DATA(self)->riContext);
+	RiMotionBeginV(N, times);
+	delete[](times);
+	return self;
+
+}
+	
 IoObject *IoRenderMan_motionEnd(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RiContext(DATA(self)->riContext);
@@ -1620,6 +1894,32 @@ IoObject *IoRenderMan_makeTexture(IoRenderMan* self, IoObject* locals, IoMessage
 	IoRenderMan_getParameterList(self, locals, m, 7, IoMessage_argCount(m) - 7, plist);
 	RiContext(DATA(self)->riContext);
 	RiMakeTextureV(imagefile, texturefile, swrap, twrap, filterfunc, swidth, twidth, plist.count, plist.tokens, plist.values);
+	IoRenderMan_freeParameterList(plist);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_makeBump(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtString imagefile;
+	imagefile = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	RtString bumpfile;
+	bumpfile = IoMessage_locals_cStringArgAt_(m, locals, 1);
+	RtToken swrap;
+	swrap = IoMessage_locals_cStringArgAt_(m, locals, 2);
+	RtToken twrap;
+	twrap = IoMessage_locals_cStringArgAt_(m, locals, 3);
+	RtFilterFunc filterfunc;
+	const char* __filterfunc_name = IoMessage_locals_cStringArgAt_(m, locals, 4);
+	filterfunc = IoRenderMan_getFilterFromName(__filterfunc_name);
+	RtFloat swidth;
+	swidth = IoMessage_locals_doubleArgAt_(m, locals, 5);
+	RtFloat twidth;
+	twidth = IoMessage_locals_doubleArgAt_(m, locals, 6);
+	IoRenderManParameterList plist;
+	IoRenderMan_getParameterList(self, locals, m, 7, IoMessage_argCount(m) - 7, plist);
+	RiContext(DATA(self)->riContext);
+	RiMakeBumpV(imagefile, bumpfile, swrap, twrap, filterfunc, swidth, twidth, plist.count, plist.tokens, plist.values);
 	IoRenderMan_freeParameterList(plist);
 	return self;
 
@@ -1735,12 +2035,67 @@ IoObject *IoRenderMan_errorHandler(IoRenderMan* self, IoObject* locals, IoMessag
 
 }
 	
+IoObject *IoRenderMan_errorIgnore(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt code;
+	code = IoMessage_locals_intArgAt_(m, locals, 0);
+	RtInt severity;
+	severity = IoMessage_locals_intArgAt_(m, locals, 1);
+	RtString message;
+	message = IoMessage_locals_cStringArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
+	RiErrorIgnore(code, severity, message);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_errorPrint(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt code;
+	code = IoMessage_locals_intArgAt_(m, locals, 0);
+	RtInt severity;
+	severity = IoMessage_locals_intArgAt_(m, locals, 1);
+	RtString message;
+	message = IoMessage_locals_cStringArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
+	RiErrorPrint(code, severity, message);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_errorAbort(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtInt code;
+	code = IoMessage_locals_intArgAt_(m, locals, 0);
+	RtInt severity;
+	severity = IoMessage_locals_intArgAt_(m, locals, 1);
+	RtString message;
+	message = IoMessage_locals_cStringArgAt_(m, locals, 2);
+	RiContext(DATA(self)->riContext);
+	RiErrorAbort(code, severity, message);
+	return self;
+
+}
+	
+IoObject *IoRenderMan_archiveRecord(IoRenderMan* self, IoObject* locals, IoMessage* m)
+{
+	RtToken type;
+	type = IoMessage_locals_cStringArgAt_(m, locals, 0);
+	char * format;
+	format = IoMessage_locals_cStringArgAt_(m, locals, 1);
+	// Unhandled type "".
+	RiContext(DATA(self)->riContext);
+	RiArchiveRecord(type, format);
+	return self;
+
+}
+	
 IoObject *IoRenderMan_readArchive(IoRenderMan* self, IoObject* locals, IoMessage* m)
 {
 	RtToken name;
 	name = IoMessage_locals_cStringArgAt_(m, locals, 0);
 	RtArchiveCallback callback;
-	// Unhandled type.
+	callback = 0;
 	IoRenderManParameterList plist;
 	IoRenderMan_getParameterList(self, locals, m, 2, IoMessage_argCount(m) - 2, plist);
 	RiContext(DATA(self)->riContext);

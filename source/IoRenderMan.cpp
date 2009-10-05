@@ -18,6 +18,7 @@ extern "C" {
 #include "IoRenderMan.h"
 
 #include <iostream>
+#include <cstring>
 
 #define DATA(self) ((IoRenderManData*)IoObject_dataPointer(self))
 

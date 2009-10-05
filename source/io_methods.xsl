@@ -11,7 +11,7 @@
 	<xsl:template match="RiAPI">
 // Automatically generated from the api.xml via io_sigs.xsl, do not hand edit!
 		<!--	Procedures	-->
-		<xsl:apply-templates select="Procedures/Procedure[Rib and not(Name = 'RiMotionBegin') and not(Name = 'RiProcedural')]"/>
+		<xsl:apply-templates select="Procedures/Procedure[not(Name = 'RiMotionBegin') and not(Name = 'RiProcedural')]"/>
 		<xsl:text>&#xa;&#xa;</xsl:text>
 	</xsl:template>
 
@@ -78,7 +78,7 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 					</xsl:when>
 					<xsl:when test="Type = 'RtColorArray' or Type = 'RtPointArray'">
 						<xsl:value-of select="concat('&#x9;&#x9;IOASSERT(ISVECTOR(entry), &quot;Expected a list of vectors for ', Type, '&quot;);&#xa;')"/>
-						<xsl:value-of select="concat('&#x9;&#x9;UArray* vector = IoSeq_rawUArray(entry);&#xa;')"/>
+						<xsl:value-of select="string('&#x9;&#x9;UArray* vector = IoSeq_rawUArray(entry);&#xa;')"/>
 						<xsl:value-of select="concat('&#x9;&#x9;', Name, '[__', Name, '_index][0] = UArray_doubleAt_(vector, 0);&#xa;')"/>
 						<xsl:value-of select="concat('&#x9;&#x9;', Name, '[__', Name, '_index][1] = UArray_doubleAt_(vector, 1);&#xa;')"/>
 						<xsl:value-of select="concat('&#x9;&#x9;', Name, '[__', Name, '_index][2] = UArray_doubleAt_(vector, 2);&#xa;')"/>
@@ -111,7 +111,7 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 					<xsl:when test="Type = 'RtInt'">
 						<xsl:value-of select="concat('&#x9;', Name, ' = IoMessage_locals_intArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
 					</xsl:when>
-					<xsl:when test="Type = 'RtToken' or Type = 'RtString'">
+					<xsl:when test="Type = 'RtToken' or Type = 'RtString' or Type = 'char *'">
 						<xsl:value-of select="concat('&#x9;', Name, ' = IoMessage_locals_cStringArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
 					</xsl:when>
 					<xsl:when test="Type = 'RtPoint' or Type = 'RtColor'">
@@ -140,8 +140,11 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 						<xsl:value-of select="concat('&#x9;const char* __', Name, '_name = IoMessage_locals_cStringArgAt_(m, locals, ', position()-1, ');&#xa;')"/>
 						<xsl:value-of select="concat('&#x9;', Name, ' = IoRenderMan_getFilterFromName(__', Name, '_name);&#xa;')"/>
 					</xsl:when>
+					<xsl:when test="Type = 'RtArchiveCallback'">
+						<xsl:value-of select="concat('&#x9;', Name, ' = 0;&#xa;')"/>
+					</xsl:when>
 					<xsl:otherwise>
-						<xsl:value-of select="string('&#x9;// Unhandled type.&#xa;')"/>
+						<xsl:value-of select="concat('&#x9;// Unhandled type &quot;', Type, '&quot;.&#xa;')"/>
 					</xsl:otherwise>
 				</xsl:choose>
 			</xsl:otherwise>
@@ -154,8 +157,10 @@ IoObject *IoRenderMan_<xsl:apply-templates select="." mode="procedure_name"/>(Io
 	</xsl:template>
 
 	<xsl:template match="Argument" mode="pass_to_c_api">
-		<xsl:value-of select="Name"/>
-		<xsl:if test="not(position()=last())">, </xsl:if>
+		<xsl:if test="Name != '...'">		
+			<xsl:if test="not(position()=1)">, </xsl:if>
+			<xsl:value-of select="Name"/>
+		</xsl:if>
 	</xsl:template>
 
 	<xsl:template match="Arguments" mode="cleanup">
